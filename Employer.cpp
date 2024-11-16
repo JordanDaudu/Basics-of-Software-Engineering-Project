@@ -3,3 +3,8 @@
 //
 
 #include "Employer.h"
+Employer::Employer(): User()
+{}
+Employer::Employer(string id, string password, string firstName, string lastName, int age, string loc,
+                     unsigned int phoneNum): User(id, password, firstName, lastName, age, loc, phoneNum)
+{}

@@ -22,7 +22,14 @@ class User
             User(string id, string password, string firstName, string lastName,
                  int age, string loc, unsigned int phoneNum);
             ~User();
-            void print();
+            string getId() const;
+            string getPassword() const;
+            string getFirstName() const;
+            string getLastName() const;
+            int getAge() const;
+            string getLocation() const;
+            unsigned int getPhoneNumber() const;
+            virtual void print();
         };
 
 

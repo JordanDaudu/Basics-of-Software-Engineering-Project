@@ -30,7 +30,15 @@ User::User(string id, string password, string firstName, string lastName, int ag
 }
 User::~User() {}
 
+string User::getId() const {return id;}
+string User::getPassword() const {return password;}
+string User::getFirstName() const {return firstName;}
+string User::getLastName() const {return lastName;}
+int User::getAge() const {return age;}
+string User::getLocation() const {return location;}
+unsigned int User::getPhoneNumber() const {return phoneNumber;}
+
 void User::print()
 {
-    cout << "test" << endl;
+    cout << "test: " << firstName << endl;
 }

@@ -11,7 +11,9 @@ class Candidate: virtual public User
         private:
 
         public:
-
+            Candidate();
+            Candidate(string id, string password, string firstName, string lastName,
+                int age, string loc, unsigned int phoneNum);
         };
 
 
