@@ -21,7 +21,8 @@ class User
             User();
             User(string id, string password, string firstName, string lastName,
                  int age, string loc, unsigned int phoneNum);
-            ~User();
+            virtual ~User();
+            virtual char *getType() const;
             string getId() const;
             string getPassword() const;
             string getFirstName() const;

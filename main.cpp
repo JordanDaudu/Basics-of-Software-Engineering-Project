@@ -1,11 +1,12 @@
 #include <iostream>
 #include <list>
+#include <typeinfo>
 #include "User.h"
 #include "Candidate.h"
 #include "Employer.h"
 using namespace std;
 
-void registerUser(list<User> &user)
+void registerUser(list<shared_ptr<User>> &user)
 {
     int choice;
     cout << "Which user are you?\n1.Candidate\n2.Employer" << endl;
@@ -31,11 +32,11 @@ void registerUser(list<User> &user)
     cout << "Type in your phone number: ";
     cin >> phoneNumber;
     if(choice == 1)
-         user.push_back(Candidate(id, password, firstName, lastName, age, location, phoneNumber));
+         user.push_back(make_shared<Candidate>(id, password, firstName, lastName, age, location, phoneNumber));
     else if(choice == 2)
-        user.push_back(Employer(id, password, firstName, lastName, age, location, phoneNumber));
+        user.push_back(make_shared<Employer>(id, password, firstName, lastName, age, location, phoneNumber));
 }
-User *loginUser(list<User> &user)
+shared_ptr<User> loginUser(list<shared_ptr<User>> &user)
 {
     bool found = false;
     string id, password;
@@ -45,8 +46,8 @@ User *loginUser(list<User> &user)
     cin >> password;
     for(auto i = user.begin(); i != user.end(); i++)
     {
-        if(i->getId() == id && i->getPassword() == password)
-            return &*i;
+        if((*i)->getId() == id && (*i)->getPassword() == password)
+            return *i;
     }
     cout << "Id or password is incorrect." << endl;
     return nullptr;
@@ -54,21 +55,24 @@ User *loginUser(list<User> &user)
 
 int main()
 {
-    User *currentUser;
+    shared_ptr<User> currentUser;
     int choice = 1;
     int size = 0;
-    list<User> userList;
-    list<User>::iterator i;
+    // using shared ptr, so it will delete automatically without needing delete
+    list<shared_ptr<User>> userList;
+    list<shared_ptr<User>>::iterator i;
     cout << userList.size();
+    //adding jordan user for testing
     while(choice == 1)
     {
-        User x("Jordan", "1111", "Jordan", "Daudu", 22, "Ashdod", 054);
-        userList.push_back(x);
+        //User x("Jordan", "1111", "Jordan", "Daudu", 22, "Ashdod", 054);
+        //userList.push_back(x);
+        userList.push_back(make_shared<User> ("Jordan", "1111", "Jordan", "Daudu", 22, "Ashdod", 054));
         cin >> choice;
         size++;
     }
     for(i = userList.begin(); i != userList.end(); i++)
-        i->print();
+        (*i)->print();
     cout << "~~~Job search system~~~" << endl;
     do
     {
@@ -90,6 +94,14 @@ int main()
     }
     while(choice != 3);
     for(i = userList.begin(); i != userList.end(); i++)
-        i->print();
+        (*i)->print();
+    if(strcmp(currentUser->getType(), "Candidate") == 0)
+        cout << "Candidate login" << endl;
+    else if(strcmp(currentUser->getType(), "Employer") == 0)
+        cout << "Employer login" << endl;
+    //delete userList.back();
+    userList.pop_back();
+    for(i = userList.begin(); i != userList.end(); i++)
+        (*i)->print();
     return 0;
 }
