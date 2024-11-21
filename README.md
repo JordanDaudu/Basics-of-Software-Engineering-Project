@@ -20,12 +20,12 @@ git checkout branch_name - יעביר אותנו לבראנץ | ענף אחר<br
 input id, password, first name, last name, age, location, phone number ✅<br />
 
 <h2 align="left"> Candidate menu: </h2>
-1.	search for jobs ❌<br />
+1.	search for jobs ✅<br />
 2.	apply for job ❌<br />
 3.	upload resume ❌<br />
 4.	submission history ❌<br />
 5.	edit profile ❌<br />
-6.	average salary calculator ❌<br />
+6.	average salary calculator ✅<br />
 7.	leave review on employer ❌<br />
 8.	delete account ❌<br />
 9.	Frequently asked questions / tips ❌<br />
