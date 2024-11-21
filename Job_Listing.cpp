@@ -54,6 +54,54 @@ string Job_Listing::getLocation() const {return location;}
 int Job_Listing::getSalary() const {return salary;}
 bool Job_Listing::getPaid() const {return paid;}
 
+string Job_Listing::getPositionID(int choice) const
+{
+    if(choice == 1)
+        return "Full-time";
+    else if(choice == 2)
+        return "Half-time";
+}
+string Job_Listing::getProfessionID(int choice) const
+{
+    switch (choice)
+    {
+        case 1:
+            return "Software engineer";
+        case 2:
+            return "Electrical engineer";
+        case 3:
+            return "Civil engineer";
+        case 4:
+            return "Mechanical engineer";
+        case 5:
+            return "Industrial engineering and management";
+        case 6:
+            return "Chemical engineering";
+        default:
+            return "None";
+    }
+}
+string Job_Listing::getLocationID(int choice) const
+{
+    switch (choice)
+    {
+        case 1:
+            return "Jerusalem region";
+        case 2:
+            return "Northern region";
+        case 3:
+            return "Haifa region";
+        case 4:
+            return "Central region";
+        case 5:
+            return "Tel-Aviv region";
+        case 6:
+            return "Southern region";
+        default:
+            return "None";
+    }
+}
+
 void Job_Listing::setName(string text)
 {
     name = std::move(text);
@@ -145,4 +193,24 @@ void Job_Listing::setLocation(int choice)
     }
 }
 void Job_Listing::setSalary(int newSalary) {salary = newSalary;}
-void Job_Listing::setPaid(bool choice) {paid = choice;}
+void Job_Listing::setPaid(bool choice)
+{
+    if(choice == 1)
+        paid = true;
+    else
+        paid = false;
+}
+
+void Job_Listing::print() const
+{
+    cout << "|" << name << "|" << endl;
+    cout << " Description: " << description << endl;
+    cout << " - Position: " << position << endl;
+    cout << " - Experience: " << experience << endl;
+    cout << " - Profession: " << profession << endl;
+    cout << " - Location: " << location << endl;
+    if(salary != 0)
+        cout << " - Salary: " << salary << endl;
+    if(paid)
+        cout << "^^^Paid advertisement^^^" << endl;
+}

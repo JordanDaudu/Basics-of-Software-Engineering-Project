@@ -7,6 +7,86 @@
 #include "Job_Listing.h"
 using namespace std;
 
+// Calculate the average of a chosen profession
+void calculateProfessionAverage(list<shared_ptr<Job_Listing>> &job_list)
+{
+    int choice;
+    int size = 0;
+    int sum = 0;
+    float average = 0.0;
+    list<shared_ptr<Job_Listing>>::iterator jobsIndex;
+    do
+    {
+        cout << "Which profession would you like to check the average?:\n1.Software engineer\n2.Electrical engineer\n3.Civil engineer\n"
+                "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n";
+        cin >> choice;
+        if(choice <= 0 || choice >= 7)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(choice <= 0 || choice >= 7);
+    for(jobsIndex = job_list.begin(); jobsIndex != job_list.end(); jobsIndex++)
+        if((*jobsIndex)->getProfession() == (*jobsIndex)->getProfessionID(choice))
+        {
+            sum += (*jobsIndex)->getSalary();
+            size++;
+        }
+    average = sum / size;
+    if(average == 0.0)
+        cout << "There is no job in the system with a salary in this profession." << endl;
+    else
+        cout << "The average is: " << average << endl;
+}
+// Search function for Candidate
+void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
+{
+    int position, experience, profession, location;
+    list<shared_ptr<Job_Listing>>::iterator jobsIndex;
+    do
+    {
+        cout << "What position would you like?:\n1.Full-time\n2.Half-time\n";
+        cin >> position;
+        if(position != 1 && position != 2)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(position != 1 && position != 2);
+    do
+    {
+        cout << "How many years of experience do you have?:\n0.No experience\n1.1 year\n2.2 years\n3.3 years\n4.4 years\n5.5+ years\n";
+        cin >> experience;
+        if(experience < 0 || experience > 5)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(experience < 0 || experience > 5);
+    do
+    {
+        cout << "What profession are you looking for?:\n1.Software engineer\n2.Electrical engineer\n3.Civil engineer\n"
+                "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.None\n";
+        cin >> profession;
+        if(profession <= 0 || profession >= 8)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(profession <= 0 || profession >= 8);
+    do
+    {
+        cout << "Which location would you like to search in?:\n1.Jerusalem region\n2.Northern region\n3.Haifa region\n"
+                "4.Central region\n5.Tel-Aviv region\n6.Southern region\n";
+        cin >> location;
+        if(location <= 0 || location >= 7)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(location <= 0 || location >= 7);
+    for(jobsIndex = job_list.begin(); jobsIndex != job_list.end(); jobsIndex++)
+        if((*jobsIndex)->getPaid())
+            (*jobsIndex)->print();
+    for(jobsIndex = job_list.begin(); jobsIndex != job_list.end(); jobsIndex++)
+        if((*jobsIndex)->getPosition() == (*jobsIndex)->getPositionID(position) && (*jobsIndex)->getExperience() == experience &&
+        (*jobsIndex)->getProfession() == (*jobsIndex)->getProfessionID(profession) && (*jobsIndex)->getLocation() == (*jobsIndex)->getLocationID(location) &&
+        !(*jobsIndex)->getPaid())
+            (*jobsIndex)->print();
+    cout << endl;
+}
+
+// Publish function for employer
 void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     string name, text;
@@ -22,7 +102,7 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
             break;
         cout << "Name cannot be empty. Please enter again: ";
     }
-    cout << "Type a brief description of the job (type 'exit' to stop): ";
+    cout << "Type a brief description of the job: ";
     while(true)
     {
         getline(cin, text);
@@ -73,7 +153,7 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     }
     while(salary < 0);
     cout << "Would you like to pay X amount to advertise your job listing?" << endl;
-    cout << "Advertisement makes it so your listing is displayed in every search!\n1.Yes\n2.No" << endl;
+    cout << "Advertisement makes it so your listing is displayed in every search!\n0.No\n1.Yes" << endl;
     cin >> paid;
     job_list.push_back(make_shared<Job_Listing>(name, text, position, experience, profession, location, salary, paid));
     // adding to the employer the job to the array of jobs he / she has
@@ -81,13 +161,14 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     shared_ptr<Job_Listing> lastAdded = job_list.back();
     tmp->addJobListing(lastAdded);
 }
+
 // Function of the menu that the candidate uses
-void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUser)
+void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     int choice;
-    cout << "||Welcome " << currentUser->getFirstName() << "||" << endl;
     do
     {
+        cout << "||Welcome " << currentUser->getFirstName() << "||" << endl;
         cout << "1.Search for jobs\n2.Apply for job\n3.Upload resume\n4.Submission history\n5.Edit profile\n"
                 "6.Average salary calculator\n7.Leave review on employer\n8.Delete account\n"
                 "9.Frequently asked question / Tips\n10.Logout" << endl;
@@ -96,7 +177,13 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
         {
             case 1:
             {
-
+                searchJob(currentUser, job_list);
+                break;
+            }
+            case 6:
+            {
+                calculateProfessionAverage(job_list);
+                break;
             }
             // need to add all functions
             case 10:
@@ -113,9 +200,9 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
 void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     int choice;
-    cout << "||Welcome " << currentUser->getFirstName() << "||" << endl;
     do
     {
+        cout << "||Welcome " << currentUser->getFirstName() << "||" << endl;
         cout << "1.Publish submission\n2.Edit submission\n3.Delete submission\n4.Published jobs\n"
                 "5.View candidate profiles to accept / deny\n""6.Search for jobs\n"
                 "7.Pay to advertise\n8.Delete account\n""9.Frequently asked question / Tips\n10.Logout" << endl;
@@ -196,7 +283,7 @@ shared_ptr<User> loginUser(list<shared_ptr<User>> &user, shared_ptr<User> &curre
         return nullptr;
     }
     if(strcmp(currentUser->getType(), "Candidate") == 0)
-        candidateMenu(user, currentUser);
+        candidateMenu(user, currentUser, job_list);
     else if(strcmp(currentUser->getType(), "Employer") == 0)
         employerMenu(user, currentUser, job_list);
     return nullptr;

@@ -27,9 +27,13 @@ class Job_Listing
             string getName() const;
             string getDescription() const;
             string getPosition() const;
+            string getPositionID(int choice) const;
             int getExperience() const;
+            string getExperienceID(int choice) const;
             string getProfession() const;
+            string getProfessionID(int choice) const;
             string getLocation() const;
+            string getLocationID(int choice) const;
             int getSalary() const;
             bool getPaid() const;
             void setName(string text);
@@ -40,6 +44,7 @@ class Job_Listing
             void setLocation(int choice);
             void setSalary(int newSalary);
             void setPaid(bool choice);
+            void print() const;
         };
 
 
