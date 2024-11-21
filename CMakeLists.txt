@@ -9,4 +9,6 @@ add_executable(Basics_of_Software_Engineering_Project main.cpp
         Candidate.cpp
         Candidate.h
         Employer.cpp
-        Employer.h)
+        Employer.h
+        Job_Listing.cpp
+        Job_Listing.h)

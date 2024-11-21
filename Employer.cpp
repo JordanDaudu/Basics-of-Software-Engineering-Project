@@ -13,3 +13,8 @@ char *Employer::getType() const
 {
     return "Employer";
 }
+
+void Employer::addJobListing(shared_ptr<Job_Listing> job)
+{
+    myJobListings.push_back(job);
+}
