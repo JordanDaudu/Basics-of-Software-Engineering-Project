@@ -1,7 +1,7 @@
 # Basics-of-Software-Engineering-Project
 קורס יסודות הנדסת תוכנה - פרוייקט
 
-Basic git commands:<br />
+<h3 align="center">Basic git commands:<h3>
 git init - create dir and open new "project"<br />
 git add - מכין קבצים שארצה להכניס לבראנץ<br />
 git commit -m "" - שומר את הקבצים שהכנתי בבראנץ<br />
