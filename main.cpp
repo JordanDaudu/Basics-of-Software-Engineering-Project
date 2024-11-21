@@ -7,7 +7,8 @@
 #include "Job_Listing.h"
 using namespace std;
 
-// Calculate the average of a chosen profession
+/// Calculate the average of a chosen profession
+/// \param job_list = list of all job listing in the system
 void calculateProfessionAverage(list<shared_ptr<Job_Listing>> &job_list)
 {
     int choice;
@@ -36,7 +37,9 @@ void calculateProfessionAverage(list<shared_ptr<Job_Listing>> &job_list)
     else
         cout << "The average is: " << average << endl;
 }
-// Search function for Candidate
+/// Search function for Candidate
+/// \param currentUser = pointer to the current user
+/// \param job_list = list of all job listing in the system
 void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     int position, experience, profession, location;
@@ -86,7 +89,9 @@ void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job
     cout << endl;
 }
 
-// Publish function for employer
+/// Publish function for employer
+/// \param currentUser = pointer to the current user
+/// \param job_list = list of all job listing in the system
 void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     string name, text;
@@ -162,7 +167,10 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     tmp->addJobListing(lastAdded);
 }
 
-// Function of the menu that the candidate uses
+/// Function of the menu that the candidate uses
+/// \param userList = user list of all users in the system
+/// \param currentUser = pointer to the current user
+/// \param job_list = list of all job listing in the system
 void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     int choice;
@@ -196,7 +204,10 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
     while(choice != 10);
 }
 
-// Function of the menu that the employer uses
+/// Function of the menu that the employer uses
+/// \param userList = user list of all users in the system
+/// \param currentUser = pointer to the current user
+/// \param job_list = list of all job listing in the system
 void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     int choice;
@@ -227,7 +238,7 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
 }
 
 /// Function to register a new user into the system
-/// \param user = userList of all users in the system
+/// \param user = user list of all users in the system
 void registerUser(list<shared_ptr<User>> &user)
 {
     int choice;
@@ -260,9 +271,9 @@ void registerUser(list<shared_ptr<User>> &user)
 }
 
 /// Function to log into the system
-/// \param user = userList of all users in the system
+/// \param user = user list of all users in the system
 /// \param currentUser = pointer to the current user
-/// \return = if login didn't happen then return null
+/// \return - if login didn't happen then return null
 shared_ptr<User> loginUser(list<shared_ptr<User>> &user, shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     string id, password;
@@ -289,7 +300,10 @@ shared_ptr<User> loginUser(list<shared_ptr<User>> &user, shared_ptr<User> &curre
     return nullptr;
 }
 
-// function of the main menu of the system
+/// function of the main menu of the system
+/// \param user = list of all users in the system
+/// \param job_list = list of all job listing in the system
+/// \return - returning null if exiting the menu
 shared_ptr<User> mainMenu(list<shared_ptr<User>> &user, list<shared_ptr<Job_Listing>> &job_list)
 {
     int choice;
