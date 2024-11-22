@@ -35,7 +35,7 @@ input id, password, first name, last name, age, location, phone number ✅<br />
 1.	publish submission ✅<br />
 2.	edit submission ❌<br />
 3.	delete submission ❌<br />
-4.	published jobs ❌<br />
+4.	published jobs ✅<br />
 5.	view profile of candidates to accept / deny ❌<br />
 6.	search for jobs ❌<br />
 7.	pay to advertise ❌<br />
