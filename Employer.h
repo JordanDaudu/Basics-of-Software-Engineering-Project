@@ -19,6 +19,7 @@ class Employer: public User
             virtual ~Employer();
             virtual char *getType() const;
             void addJobListing(shared_ptr<Job_Listing> job);
+            void printJobListings();
         };
 
 

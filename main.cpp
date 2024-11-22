@@ -6,7 +6,15 @@
 #include "Employer.h"
 #include "Job_Listing.h"
 using namespace std;
+int Job_Listing::UID = 0;
 
+/// Function that is printing all the jobs under pointed employer
+/// \param currentUser = pointer to the current user
+void employerPublishedJobs(shared_ptr<User> &currentUser)
+{
+    Employer *tmp = dynamic_cast<Employer *>(currentUser.get());
+    tmp->printJobListings();
+}
 /// Calculate the average of a chosen profession
 /// \param job_list = list of all job listing in the system
 void calculateProfessionAverage(list<shared_ptr<Job_Listing>> &job_list)
@@ -213,8 +221,8 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
     int choice;
     do
     {
-        cout << "||Welcome " << currentUser->getFirstName() << "||" << endl;
-        cout << "1.Publish submission\n2.Edit submission\n3.Delete submission\n4.Published jobs\n"
+        cout << "\n||Welcome " << currentUser->getFirstName() << "||" << endl;
+        cout << "1.Publish submission\n2.Edit submission\n3.Delete submission\n4.View published jobs\n"
                 "5.View candidate profiles to accept / deny\n""6.Search for jobs\n"
                 "7.Pay to advertise\n8.Delete account\n""9.Frequently asked question / Tips\n10.Logout" << endl;
         cin >> choice;
@@ -224,6 +232,11 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
             {
                 publishJobOffer(currentUser, job_list);
                 cout << "||Successfully added listing!||" << endl;
+                break;
+            }
+            case 4:
+            {
+                employerPublishedJobs(currentUser);
                 break;
             }
             // need to add all functions

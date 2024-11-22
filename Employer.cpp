@@ -18,3 +18,10 @@ void Employer::addJobListing(shared_ptr<Job_Listing> job)
 {
     myJobListings.push_back(job);
 }
+
+void Employer::printJobListings()
+{
+    list<shared_ptr<Job_Listing>>::iterator jobsIndex;
+    for(jobsIndex = myJobListings.begin(); jobsIndex != myJobListings.end(); jobsIndex++)
+        (*jobsIndex)->print();
+}
