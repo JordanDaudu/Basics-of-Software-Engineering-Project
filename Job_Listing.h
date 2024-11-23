@@ -18,12 +18,13 @@ class Job_Listing
             string location;
             int salary;
             bool paid;
-            int id;
-            static int UID;
+            int uid; // unique id for recognition
+            int employerUID;
+            static int UID; // unique id counter to make sure no same id is used
         public:
             Job_Listing();
             Job_Listing(string name, string description, string position, int exp, string profession, string loc, int salary);
-            Job_Listing(string name, string text, int position, int experience, int profession, int location, int newSalary, bool paid);
+            Job_Listing(string name, string text, int position, int experience, int profession, int location, int newSalary, bool paid, int employerUID);
             ~Job_Listing();
             char *getType() const;
             string getName() const;
@@ -36,7 +37,8 @@ class Job_Listing
             string getProfessionID(int choice) const;
             string getLocation() const;
             string getLocationID(int choice) const;
-            int getId() const;
+            int getUid() const;
+            int getEmployerUID() const;
             int getSalary() const;
             bool getPaid() const;
             void setName(string text);

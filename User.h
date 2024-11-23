@@ -17,6 +17,8 @@ class User
             int age;
             string location;
             unsigned int phoneNumber;
+            int uid; // unique id for recognition
+            static int UID; // unique id counter to make sure no same id is used
         public:
             User();
             User(string id, string password, string firstName, string lastName,
@@ -30,6 +32,7 @@ class User
             int getAge() const;
             string getLocation() const;
             unsigned int getPhoneNumber() const;
+            int getUid() const;
             virtual void print();
         };
 

@@ -16,6 +16,7 @@ User::User()
     age = 0;
     location = '0';
     phoneNumber = 0;
+    uid = ++UID;
 }
 User::User(string id, string password, string firstName, string lastName, int age, string loc,
            unsigned int phoneNum)
@@ -27,6 +28,7 @@ User::User(string id, string password, string firstName, string lastName, int ag
     this->age = age;
     location = loc;
     phoneNumber = phoneNum;
+    uid = ++UID;
 }
 
 char *User::getType() const
@@ -42,8 +44,12 @@ string User::getLastName() const {return lastName;}
 int User::getAge() const {return age;}
 string User::getLocation() const {return location;}
 unsigned int User::getPhoneNumber() const {return phoneNumber;}
+int User::getUid() const {return uid;}
 
 void User::print()
 {
-    cout << "test: " << firstName << endl;
+    cout << "Full name: " << firstName << " " << lastName << endl;
+    cout << "Age: " << age << endl;
+    cout << "Location: " << location << endl;
+    cout << "Phone number: " << phoneNumber << endl;
 }

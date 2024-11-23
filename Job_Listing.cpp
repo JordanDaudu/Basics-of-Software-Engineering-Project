@@ -13,7 +13,7 @@ Job_Listing::Job_Listing()
     location = nullptr;
     salary = 0;
     paid = false;
-    id = ++UID;
+    uid = ++UID;
 }
 
 Job_Listing::Job_Listing(string name, string description, string position, int exp, string profession, string loc, int salary)
@@ -25,11 +25,11 @@ Job_Listing::Job_Listing(string name, string description, string position, int e
     this->profession = profession;
     location = loc;
     this->salary = salary;
-    id = ++UID;
+    uid = ++UID;
 }
 
 Job_Listing::Job_Listing(string name, string text, int position, int experience, int profession, int location, int newSalary,
-                         bool paid)
+                         bool paid, int employerUID)
 {
     this->name = std::move(name);
     description = std::move(text);
@@ -39,7 +39,8 @@ Job_Listing::Job_Listing(string name, string text, int position, int experience,
     setLocation(location);
     salary = newSalary;
     this->paid = paid;
-    id = ++UID;
+    this->employerUID = employerUID;
+    uid = ++UID;
 }
 Job_Listing::~Job_Listing() {cout << "Job_Listing::destructor" << endl;}
 
@@ -56,7 +57,8 @@ string Job_Listing::getProfession() const {return profession;}
 string Job_Listing::getLocation() const {return location;}
 int Job_Listing::getSalary() const {return salary;}
 bool Job_Listing::getPaid() const {return paid;}
-int Job_Listing::getId() const {return id;}
+int Job_Listing::getUid() const {return uid;}
+int Job_Listing::getEmployerUID() const {return employerUID;}
 
 string Job_Listing::getPositionID(int choice) const
 {
@@ -207,7 +209,7 @@ void Job_Listing::setPaid(bool choice)
 
 void Job_Listing::print() const
 {
-    cout << "|" << name << "|" << endl;
+    cout << "|Name: " << name << "|" << endl;
     cout << " Description: " << description << endl;
     cout << " - Position: " << position << endl;
     cout << " - Experience: " << experience << endl;
@@ -215,7 +217,5 @@ void Job_Listing::print() const
     cout << " - Location: " << location << endl;
     if(salary != 0)
         cout << " - Salary: " << salary << endl;
-    cout << " - UID: " << id << endl;
-    if(paid)
-        cout << "^^^Paid advertisement^^^" << endl;
+    cout << " - UID: " << uid << endl;
 }

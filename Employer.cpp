@@ -25,3 +25,10 @@ void Employer::printJobListings()
     for(jobsIndex = myJobListings.begin(); jobsIndex != myJobListings.end(); jobsIndex++)
         (*jobsIndex)->print();
 }
+
+bool Employer::checkListEmpty() const
+{
+    if(myJobListings.empty())
+        return true;
+    return false;
+}
