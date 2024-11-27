@@ -1,5 +1,7 @@
 #include <iostream>
-#include <list>
+#include <list> // using to make lists of objects
+#include <limits> // using to check maximums
+#include <cctype> // using library to check if a string is using only letters
 #include "User.h"
 #include "Candidate.h"
 #include "Employer.h"
@@ -8,6 +10,112 @@
 using namespace std;
 int User::UID = 0, Job_Listing::UID = 0, Job_Submission::UID = 0;
 
+/// Function to check if string input is using only letters
+/// \return acceptable value (string with letters)
+string getValidString()
+{
+    string value;
+    while (true)
+    {
+        getline(cin, value); // read the entire line
+        bool isValid = true;
+
+        for (char c : value)
+        {
+            if (!isalpha(c)) // check if the character is not a letter
+            {
+                isValid = false;
+                break;
+            }
+        }
+
+        if (isValid)
+            break; // exit loop if input is valid
+        else
+            cout << "Invalid input. Please enter letters only." << endl;
+    }
+    return value;
+}
+/// Function to check if integer input is indeed a integer
+/// \return = acceptable value (integer)
+int getValidInt()
+{
+    int value;
+    while(true)
+    {
+        if(cin >> value) // successful read
+            break;
+        else
+        {
+            cout << "Invalid input. please enter a valid input." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignore invalid input
+        }
+    }
+    return value;
+}
+
+void editProfile(shared_ptr<User> &currentUser)
+{
+    int choice, number, location;
+    string text;
+    do
+    {
+        cout << "What would you like to edit?\n1.First name\n2.Last name\n3.Age\n4.Location\n5.Phone number\n6.Resume (not working currently)\n7.Go back to main menu" << endl;
+        choice = getValidInt();
+        switch (choice)
+        {
+            case 1:
+                cout << "Type new first name: ";
+                cin.ignore();
+                text = getValidString();
+                currentUser->setFirstName(text);
+                cout << "|Changed first name successfully!\n going back to editing menu..." << endl;
+                break;
+            case 2:
+                cout << "Type new last name: ";
+                cin.ignore();
+                text = getValidString();
+                currentUser->setLastName(text);
+                cout << "|Changed last name successfully!\n going back to editing menu..." << endl;
+                break;
+            case 3:
+                cout << "Type your age: ";
+                number = getValidInt();
+                currentUser->setAge(number);
+                cout << "|Changed phone number successfully!\n going back to editing menu..." << endl;
+                break;
+            case 4:
+                cout << "What is your new region of living?: " << endl;
+                cout << "1.Jerusalem region\n2.Northern region\n3.Haifa region\n4.Central region\n5.Tel-Aviv region\n6.Southern region\n";
+                do
+                {
+                    location = getValidInt();
+                    if(location <= 0 || location >= 7)
+                        cout << "Error! input not supported, try again" << endl;
+                }
+                while(location <= 0 || location >= 7);
+                currentUser->setLocation(location);
+                cout << "|Changed location successfully!\n going back to editing menu..." << endl;
+                break;
+            case 5:
+                cout << "What is your new phone number?: ";
+                number = getValidInt();
+                currentUser->setPhoneNumber(number);
+                cout << "|Changed phone number successfully!\n going back to editing menu..." << endl;
+                break;
+            case 6:
+                cout << "Not working currently" << endl; // NEED TO BE ADDED!!!!
+                break;
+            case 7:
+                cout << "Going back to main menu..." << endl;
+                break;
+            default:
+                cout << "Error! input not supported, try again" << endl;
+        }
+    }
+    while(choice != 7);
+}
 /// Function to view and accept submission that employer received
 /// \param currentUser = pointer to the current user
 /// \param userList = list of all users in the system
@@ -74,9 +182,9 @@ void employerViewCandidateSubmission(shared_ptr<User> &currentUser, list<shared_
                 while(choice <= 0 || choice >= 4);
                 (*jobSubmissionIndex)->setStatus(choice);
                 if(choice == 1)
-                    cout << "Successfully accepted submission!" << endl;
+                    cout << "|Successfully accepted submission!" << endl;
                 else if(choice == 2)
-                    cout << "Successfully rejected submission!" << endl;
+                    cout << "|Successfully rejected submission!" << endl;
             }
         }
     }
@@ -326,7 +434,13 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
         cout << "1.Search for jobs\n2.Apply for job\n3.Upload resume\n4.View Submission history and status\n5.Edit profile\n"
                 "6.Average salary calculator\n7.Leave review on employer\n8.Delete account\n"
                 "9.Frequently asked question / Tips\n10.Logout" << endl;
-        cin >> choice;
+        do
+        {
+            choice = getValidInt(); // checking if choice is valid input (also checking if integer)
+            if(choice <= 0 || choice >= 11)
+                cout << "Error! input not supported, try again" << endl;
+        }
+        while(choice <= 0 || choice >= 11);
         switch (choice)
         {
             case 1:
@@ -342,6 +456,11 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
             case 4:
             {
                 candidateViewSubmissionHistory(currentUser, job_list, jobs_Submission_List);
+                break;
+            }
+            case 5:
+            {
+                editProfile(currentUser);
                 break;
             }
             case 6:
@@ -373,7 +492,13 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
         cout << "1.Publish submission\n2.Edit submission\n3.Delete submission\n4.View published jobs\n"
                 "5.View candidate profiles to accept / deny\n""6.Search for jobs\n"
                 "7.Pay to advertise\n8.Delete account\n""9.Frequently asked question / Tips\n10.Logout" << endl;
-        cin >> choice;
+        do
+        {
+            choice = getValidInt(); // checking if choice is valid input (also checking if integer)
+            if((choice <= 0 || choice >= 11))
+                cout << "Error! input not supported, try again" << endl;
+        }
+        while(choice <= 0 || choice >= 11);
         switch (choice)
         {
             case 1:
@@ -409,31 +534,42 @@ void registerUser(list<shared_ptr<User>> &user)
 {
     int choice;
     cout << "Which user are you?\n1.Candidate\n2.Employer" << endl;
-    cin >> choice;
+    choice = getValidInt();
     if(choice != 1 && choice != 2)
     {
-        cout << "Error, not a supported input, going back." << endl;
+        cout << "Error, input not supported, redirecting...." << endl;
         return;
     }
-    string id, password, firstName, lastName, location;
-    int age;
-    unsigned int phoneNumber;
+    string id, password, firstName, lastName;
+    int age, location, phoneNumber;
     cout << "Type your id: ";
     cin >> id;
     cout << "Type your password: ";
     cin >> password;
-    cout << "Type you first name and then last name: ";
-    cin >> firstName >> lastName;
+    cin.ignore();
+    cout << "Type you first name: ";
+    firstName = getValidString();
+    cout << "Type your last name: ";
+    lastName = getValidString();
     cout << "What is your age?: ";
-    cin >> age;
-    cout << "What is your city of living?: ";
-    cin >> location;
+    age = getValidInt();
+    cout << "What is your city of living?: " << endl;
+    cout << "1.Jerusalem region\n2.Northern region\n3.Haifa region\n4.Central region\n5.Tel-Aviv region\n6.Southern region\n";
+    do
+    {
+        location = getValidInt();
+        if(location <= 0 || location >= 7)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(location <= 0 || location >= 7);
     cout << "Type in your phone number: ";
-    cin >> phoneNumber;
+    phoneNumber = getValidInt();
     if(choice == 1)
          user.push_back(make_shared<Candidate>(id, password, firstName, lastName, age, location, phoneNumber));
     else if(choice == 2)
         user.push_back(make_shared<Employer>(id, password, firstName, lastName, age, location, phoneNumber));
+    else
+        return;
 }
 
 /// Function to log into the system
@@ -477,7 +613,7 @@ shared_ptr<User> mainMenu(list<shared_ptr<User>> &user, list<shared_ptr<Job_List
     do
     {
         cout << "1.Register\n2.Login\n3.Exit" << endl;
-        cin >> choice;
+        choice = getValidInt();
         if(choice <= 0 || choice >= 4)
             cout << "Not supported input, try again." << endl;
         if(choice == 1)
@@ -512,9 +648,9 @@ int main()
 
     cout << userList.size();
     //adding 3 admin user for testing and deleting a user to see if it works
-    userList.push_back(make_shared<Candidate> ("admin", "1111", "admin", "user", 0, "none", 054));
-    userList.push_back(make_shared<User> ("bdmin", "1111", "bdmin", "user", 0, "none", 054));
-    userList.push_back(make_shared<Employer> ("cdmin", "1111", "cdmin", "user", 0, "none", 054));
+    userList.push_back(make_shared<Candidate> ("admin", "1111", "admin", "user", 0, "Jerusalem region", 054));
+    userList.push_back(make_shared<User> ("bdmin", "1111", "bdmin", "user", 0, "Jerusalem region", 054));
+    userList.push_back(make_shared<Employer> ("cdmin", "1111", "cdmin", "user", 0, "Jerusalem region", 054));
     for(i = userList.begin(); i != userList.end(); i++)
     {
         if((*i)->getId() == "bdmin")

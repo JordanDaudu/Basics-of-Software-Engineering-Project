@@ -15,7 +15,9 @@ class Employer: public User
         public:
             Employer();
             Employer(string id, string password, string firstName, string lastName,
-                int age, string loc, unsigned int phoneNum);
+                int age, string loc, int phoneNum);
+            Employer(string id, string password, string firstName, string lastName,
+                     int age, int loc, int phoneNum);
             virtual ~Employer();
             virtual char *getType() const;
             void addJobListing(shared_ptr<Job_Listing> job);

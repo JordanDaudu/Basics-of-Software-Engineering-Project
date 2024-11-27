@@ -16,13 +16,15 @@ class User
             string lastName;
             int age;
             string location;
-            unsigned int phoneNumber;
+            int phoneNumber;
             int uid; // unique id for recognition
             static int UID; // unique id counter to make sure no same id is used
         public:
             User();
             User(string id, string password, string firstName, string lastName,
-                 int age, string loc, unsigned int phoneNum);
+                 int age, string loc, int phoneNum);
+            User(string id, string password, string firstName, string lastName,
+                 int age, int loc, int phoneNum);
             virtual ~User();
             virtual char *getType() const;
             string getId() const;
@@ -33,6 +35,11 @@ class User
             string getLocation() const;
             unsigned int getPhoneNumber() const;
             int getUid() const;
+            void setFirstName(string name);
+            void setLastName(string name);
+            void setAge(int newAge);
+            void setLocation(int choice);
+            void setPhoneNumber(int phoneNum);
             virtual void print();
         };
 

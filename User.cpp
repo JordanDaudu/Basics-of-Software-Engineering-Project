@@ -3,7 +3,6 @@
 //
 
 #include "User.h"
-#include <cstring>
 #include <iostream>
 using namespace std;
 
@@ -19,7 +18,7 @@ User::User()
     uid = ++UID;
 }
 User::User(string id, string password, string firstName, string lastName, int age, string loc,
-           unsigned int phoneNum)
+           int phoneNum)
 {
     this->id = id;
     this->password = password;
@@ -27,6 +26,18 @@ User::User(string id, string password, string firstName, string lastName, int ag
     this->lastName = lastName;
     this->age = age;
     location = loc;
+    phoneNumber = phoneNum;
+    uid = ++UID;
+}
+User::User(string id, string password, string firstName, string lastName, int age, int loc,
+           int phoneNum)
+{
+    this->id = id;
+    this->password = password;
+    this->firstName = firstName;
+    this->lastName = lastName;
+    this->age = age;
+    setLocation(loc);
     phoneNumber = phoneNum;
     uid = ++UID;
 }
@@ -46,6 +57,35 @@ string User::getLocation() const {return location;}
 unsigned int User::getPhoneNumber() const {return phoneNumber;}
 int User::getUid() const {return uid;}
 
+void User::setFirstName(string name) {firstName = name;}
+void User::setLastName(string name) {lastName = name;}
+void User::setAge(int newAge) {age = newAge;}
+void User::setPhoneNumber(int phoneNum) {phoneNumber = phoneNum;}
+void User::setLocation(int choice)
+{
+    switch (choice) {
+        case 1:
+            location = "Jerusalem region";
+            break;
+        case 2:
+            location = "Northern region";
+            break;
+        case 3:
+            location = "Haifa region";
+            break;
+        case 4:
+            location = "Central region";
+            break;
+        case 5:
+            location = "Tel-Aviv region";
+            break;
+        case 6:
+            location = "Southern region";
+            break;
+        default:
+            location = "None";
+    }
+}
 void User::print()
 {
     cout << "Full name: " << firstName << " " << lastName << endl;

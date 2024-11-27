@@ -14,6 +14,8 @@ class Candidate: virtual public User
             Candidate();
             Candidate(string id, string password, string firstName, string lastName,
                 int age, string loc, unsigned int phoneNum);
+            Candidate(string id, string password, string firstName, string lastName,
+                      int age, int loc, int phoneNum);
             virtual ~Candidate();
             virtual char *getType() const;
         };
