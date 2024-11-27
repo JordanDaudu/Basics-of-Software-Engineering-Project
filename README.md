@@ -24,7 +24,7 @@ input id, password, first name, last name, age, location, phone number ✅<br />
 2.	apply for job ✅<br />
 3.	upload resume ❌<br />
 4.	view submission history and status ✅<br />
-5.	edit profile ❌<br />
+5.	edit profile 🆗(still needs resume added)<br />
 6.	average salary calculator ✅<br />
 7.	leave review on employer ❌<br />
 8.	delete account ❌<br />
