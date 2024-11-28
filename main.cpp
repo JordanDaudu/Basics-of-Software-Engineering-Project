@@ -54,7 +54,65 @@ int getValidInt()
     }
     return value;
 }
-
+void employerViewOwnReviews(shared_ptr<User> &currentUser)
+{
+    Employer *employer = dynamic_cast<Employer *>(currentUser.get());
+    employer->printReviews();
+}
+/// Function for candidate to view an employer reviews
+/// \param userList = list of all users in the system
+void viewReviews(list<shared_ptr<User>> &userList)
+{
+    string firstName, lastName;
+    list<shared_ptr<User>>::iterator userListIndex;
+    bool found = false;
+    cout << "Type the full name of the employer you would like to see reviews of" << endl;
+    cout << "First name: ";
+    cin.ignore();
+    firstName = getValidString();
+    cout << "Last name: ";
+    lastName = getValidString();
+    for(userListIndex = userList.begin(); userListIndex != userList.end(); userListIndex++)
+        if((*userListIndex)->getFirstName() == firstName && (*userListIndex)->getLastName() == lastName)
+        {
+            found = true;
+            Employer *employer = dynamic_cast<Employer *>(userListIndex->get());
+            employer->printReviews();
+            return;
+        }
+    if(!found)
+        cout << "Error! user given isn't in the system, returning to main menu" << endl;
+}
+/// Function to add a review to a specific employer
+/// \param currentUser = pointer to the current user
+/// \param userList = list of all users in the system
+void addReview(shared_ptr<User> &currentUser, list<shared_ptr<User>> &userList)
+{
+    string firstName, lastName, text;
+    list<shared_ptr<User>>::iterator userListIndex;
+    bool found = false;
+    cout << "To leave a review type the employer first name and last name" << endl;
+    cout << "First name: ";
+    cin.ignore();
+    firstName = getValidString();
+    cout << "Last name: ";
+    lastName = getValidString();
+    for(userListIndex = userList.begin(); userListIndex != userList.end(); userListIndex++)
+        if((*userListIndex)->getFirstName() == firstName && (*userListIndex)->getLastName() == lastName)
+        {
+            found = true;
+            cout << "Type your review: ";
+            getline(cin, text);
+            Employer *employer = dynamic_cast<Employer *>(userListIndex->get());
+            employer->addReview(text, currentUser->getFirstName(), currentUser->getLastName());
+            cout << "|Added review successfully! returning to main menu..." << endl;
+            return;
+        }
+    if(!found)
+        cout << "Error! user given isn't in the system, returning to main menu" << endl;
+}
+/// Function to edit profile
+/// \param currentUser = pointer to the current user
 void editProfile(shared_ptr<User> &currentUser)
 {
     int choice, number, location;
@@ -250,13 +308,8 @@ void candidateApplyForJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Lis
 /// \param currentUser = pointer to the current user
 void employerPublishedJobs(shared_ptr<User> &currentUser)
 {
-    Employer *tmp = dynamic_cast<Employer *>(currentUser.get());
-    if(tmp->checkListEmpty())
-    {
-        cout << "No published jobs." << endl;
-        return;
-    }
-    tmp->printJobListings();
+    Employer *employer = dynamic_cast<Employer *>(currentUser.get());
+    employer->printJobListings();
 }
 /// Calculate the average of a chosen profession
 /// \param job_list = list of all job listing in the system
@@ -414,7 +467,7 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     cout << "Would you like to pay X amount to advertise your job listing?" << endl;
     cout << "Advertisement makes it so your listing is displayed in every search!\n0.No\n1.Yes" << endl;
     cin >> paid;
-    job_list.push_back(make_shared<Job_Listing>(name, text, position, experience, profession, location, salary, paid, currentUser->getUid()));
+    job_list.push_back(make_shared<Job_Listing>(name, text, position, experience, profession, location, salary, paid, currentUser->getUid(), currentUser));
     // adding to the employer the job to the array of jobs he / she has
     Employer *tmp = dynamic_cast<Employer *>(currentUser.get());
     shared_ptr<Job_Listing> lastAdded = job_list.back();
@@ -432,15 +485,15 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
     {
         cout << "\n||Welcome " << currentUser->getFirstName() << "||" << endl;
         cout << "1.Search for jobs\n2.Apply for job\n3.Upload resume\n4.View Submission history and status\n5.Edit profile\n"
-                "6.Average salary calculator\n7.Leave review on employer\n8.Delete account\n"
-                "9.Frequently asked question / Tips\n10.Logout" << endl;
+                "6.Average salary calculator\n7.Leave review on employer\n8.View reviews on employer\n9.Delete account\n"
+                "10.Frequently asked question / Tips\n11.Logout" << endl;
         do
         {
             choice = getValidInt(); // checking if choice is valid input (also checking if integer)
-            if(choice <= 0 || choice >= 11)
+            if(choice <= 0 || choice >= 12)
                 cout << "Error! input not supported, try again" << endl;
         }
-        while(choice <= 0 || choice >= 11);
+        while(choice <= 0 || choice >= 12);
         switch (choice)
         {
             case 1:
@@ -468,15 +521,25 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
                 calculateProfessionAverage(job_list);
                 break;
             }
+            case 7:
+            {
+                addReview(currentUser, userList);
+                break;
+            }
+            case 8:
+            {
+                viewReviews(userList);
+                break;
+            }
             // need to add all functions
-            case 10:
+            case 11:
                 cout << "Leaving system..." << endl;
                 break;
             default:
                 cout << "Error! input not supported, try again" << endl;
         }
     }
-    while(choice != 10);
+    while(choice != 11);
 }
 
 /// Function of the menu that the employer uses
@@ -490,15 +553,15 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
     {
         cout << "\n||Welcome " << currentUser->getFirstName() << "||" << endl;
         cout << "1.Publish submission\n2.Edit submission\n3.Delete submission\n4.View published jobs\n"
-                "5.View candidate profiles to accept / deny\n""6.Search for jobs\n"
-                "7.Pay to advertise\n8.Delete account\n""9.Frequently asked question / Tips\n10.Logout" << endl;
+                "5.View candidate profiles to accept / deny\n""6.Search for jobs\n7.View reviews posted on me\n"
+                "8.Pay to advertise\n9.Delete account\n10.Frequently asked question / Tips\n11.Logout" << endl;
         do
         {
             choice = getValidInt(); // checking if choice is valid input (also checking if integer)
-            if((choice <= 0 || choice >= 11))
+            if((choice <= 0 || choice >= 12))
                 cout << "Error! input not supported, try again" << endl;
         }
-        while(choice <= 0 || choice >= 11);
+        while(choice <= 0 || choice >= 12);
         switch (choice)
         {
             case 1:
@@ -517,15 +580,20 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
                 employerViewCandidateSubmission(currentUser, userList, job_list, jobs_Submission_List);
                 break;
             }
+            case 7:
+            {
+                employerViewOwnReviews(currentUser);
+                break;
+            }
             // need to add all functions
-            case 10:
+            case 11:
                 cout << "Leaving system..." << endl;
                 break;
             default:
                 cout << "Error! input not supported, try again" << endl;
         }
     }
-    while(choice != 10);
+    while(choice != 11);
 }
 
 /// Function to register a new user into the system

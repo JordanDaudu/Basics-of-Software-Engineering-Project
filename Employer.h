@@ -6,12 +6,14 @@
 #define BASICS_OF_SOFTWARE_ENGINEERING_PROJECT_EMPLOYER_H
 #include "User.h"
 #include "Job_Listing.h"
+#include "Review.h"
 #include <list>
 
 class Employer: public User
         {
         private:
             list<shared_ptr<Job_Listing>> myJobListings;
+            list<shared_ptr<Review>> reviews;
         public:
             Employer();
             Employer(string id, string password, string firstName, string lastName,
@@ -21,7 +23,9 @@ class Employer: public User
             virtual ~Employer();
             virtual char *getType() const;
             void addJobListing(shared_ptr<Job_Listing> job);
+            void addReview(const string& text, const string& firstName, const string& lastName);
             void printJobListings();
+            void printReviews();
             bool checkListEmpty() const;
         };
 

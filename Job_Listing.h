@@ -5,6 +5,7 @@
 #ifndef BASICS_OF_SOFTWARE_ENGINEERING_PROJECT_JOB_LISTING_H
 #define BASICS_OF_SOFTWARE_ENGINEERING_PROJECT_JOB_LISTING_H
 #include <iostream>
+#include "User.h"
 using namespace std;
 
 class Job_Listing
@@ -20,11 +21,12 @@ class Job_Listing
             bool paid;
             int uid; // unique id for recognition
             int employerUID;
+            weak_ptr<User> employer;
             static int UID; // unique id counter to make sure no same id is used
         public:
             Job_Listing();
             Job_Listing(string name, string description, string position, int exp, string profession, string loc, int salary);
-            Job_Listing(string name, string text, int position, int experience, int profession, int location, int newSalary, bool paid, int employerUID);
+            Job_Listing(string name, string text, int position, int experience, int profession, int location, int newSalary, bool paid, int employerUID, weak_ptr<User> employer);
             ~Job_Listing();
             char *getType() const;
             string getName() const;
@@ -32,7 +34,6 @@ class Job_Listing
             string getPosition() const;
             string getPositionID(int choice) const;
             int getExperience() const;
-            string getExperienceID(int choice) const;
             string getProfession() const;
             string getProfessionID(int choice) const;
             string getLocation() const;

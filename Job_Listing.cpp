@@ -25,11 +25,12 @@ Job_Listing::Job_Listing(string name, string description, string position, int e
     this->profession = profession;
     location = loc;
     this->salary = salary;
+    employerUID = 0;
     uid = ++UID;
 }
 
 Job_Listing::Job_Listing(string name, string text, int position, int experience, int profession, int location, int newSalary,
-                         bool paid, int employerUID)
+                         bool paid, int employerUID, weak_ptr<User> employer)
 {
     this->name = std::move(name);
     description = std::move(text);
@@ -41,8 +42,12 @@ Job_Listing::Job_Listing(string name, string text, int position, int experience,
     this->paid = paid;
     this->employerUID = employerUID;
     uid = ++UID;
+    this->employer = employer;
 }
-Job_Listing::~Job_Listing() {cout << "Job_Listing::destructor" << endl;}
+Job_Listing::~Job_Listing()
+{
+    cout << "Job_Listing::destructor" << endl;
+}
 
 char *Job_Listing::getType() const
 {
@@ -209,6 +214,7 @@ void Job_Listing::setPaid(bool choice)
 
 void Job_Listing::print() const
 {
+    shared_ptr<User> employerPtr = employer.lock(); // getting pointer if it exists
     cout << "|Name: " << name << "|" << endl;
     cout << " Description: " << description << endl;
     cout << " - Position: " << position << endl;
@@ -218,4 +224,6 @@ void Job_Listing::print() const
     if(salary != 0)
         cout << " - Salary: " << salary << endl;
     cout << " - UID: " << uid << endl;
+    if (employerPtr) // checking if an instance of employer in shared_ptr exist
+        cout << " - Employer name: " << employerPtr->getFirstName() << " " << employerPtr->getLastName() << endl;
 }

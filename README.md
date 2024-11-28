@@ -26,19 +26,21 @@ input id, password, first name, last name, age, location, phone number ✅<br />
 4.	view submission history and status ✅<br />
 5.	edit profile 🆗(still needs resume added)<br />
 6.	average salary calculator ✅<br />
-7.	leave review on employer ❌<br />
-8.	delete account ❌<br />
-9.	Frequently asked questions / tips ❌<br />
-10.	logout ✅<br />
+7.	leave review on employer ✅<br />
+8.  view reviews on employer ✅<br />
+9.	delete account ❌<br />
+10.	Frequently asked questions / tips ❌<br />
+11.	logout ✅<br />
 
 <h2 align="left"> Employer menu: </h2>
 1.	publish submission ✅<br />
 2.	edit submission ❌<br />
 3.	delete submission ❌<br />
 4.	published jobs ✅<br />
-5.	view profile of candidates to accept / deny ✅<br />
+5.	view profile of candidates to accept / deny 🆗(still needs resume added)<br />
 6.	search for jobs ❌<br />
-7.	pay to advertise ❌<br />
-8.	delete account ❌<br />
-9.	Frequently asked questions / tips ❌<br />
-10.	logout ✅<br />
+7.  view reviews posted on me ✅<br />
+8.	pay to advertise ❌<br />
+9.	delete account ❌<br />
+10.	Frequently asked questions / tips ❌<br />
+11.	logout ✅<br />

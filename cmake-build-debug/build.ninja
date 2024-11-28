@@ -85,6 +85,12 @@ build CMakeFiles/Basics_of_Software_Engineering_Project.dir/Job_Submission.cpp.o
   OBJECT_DIR = CMakeFiles/Basics_of_Software_Engineering_Project.dir
   OBJECT_FILE_DIR = CMakeFiles/Basics_of_Software_Engineering_Project.dir
 
+build CMakeFiles/Basics_of_Software_Engineering_Project.dir/Review.cpp.o: CXX_COMPILER__Basics_of_Software_Engineering_Project_unscanned_Debug /Users/jordandaudu/Documents/GitHub/Basics-of-Software-Engineering-Project/Review.cpp || cmake_object_order_depends_target_Basics_of_Software_Engineering_Project
+  DEP_FILE = CMakeFiles/Basics_of_Software_Engineering_Project.dir/Review.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/Basics_of_Software_Engineering_Project.dir
+  OBJECT_FILE_DIR = CMakeFiles/Basics_of_Software_Engineering_Project.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Basics_of_Software_Engineering_Project
@@ -93,7 +99,7 @@ build CMakeFiles/Basics_of_Software_Engineering_Project.dir/Job_Submission.cpp.o
 #############################################
 # Link the executable Basics_of_Software_Engineering_Project
 
-build Basics_of_Software_Engineering_Project: CXX_EXECUTABLE_LINKER__Basics_of_Software_Engineering_Project_Debug CMakeFiles/Basics_of_Software_Engineering_Project.dir/main.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/User.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/Candidate.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/Employer.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/Job_Listing.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/Job_Submission.cpp.o
+build Basics_of_Software_Engineering_Project: CXX_EXECUTABLE_LINKER__Basics_of_Software_Engineering_Project_Debug CMakeFiles/Basics_of_Software_Engineering_Project.dir/main.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/User.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/Candidate.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/Employer.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/Job_Listing.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/Job_Submission.cpp.o CMakeFiles/Basics_of_Software_Engineering_Project.dir/Review.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk
   OBJECT_DIR = CMakeFiles/Basics_of_Software_Engineering_Project.dir
   POST_BUILD = :
