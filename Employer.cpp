@@ -11,19 +11,8 @@ Employer::Employer(string id, string password, string firstName, string lastName
 Employer::Employer(string id, string password, string firstName, string lastName, int age, int loc,
                    int phoneNum): User(id, password, firstName, lastName, age, loc, phoneNum)
 {}
-Employer::~Employer()
-{
-    cout << "Employer::destructor" << endl;
-    /*
-    shared_ptr<Job_Listing> currentJob;
-    list<shared_ptr<Job_Listing>>::iterator i;
-    for(i = myJobListings.begin(); i != myJobListings.end(); i++)
-    {
-        currentJob = *i;
-        myJobListings.remove(currentJob);
-    }
-*/
-}
+Employer::~Employer() {cout << "Employer::destructor" << endl;}
+
 char *Employer::getType() const
 {
     return "Employer";
@@ -51,7 +40,7 @@ void Employer::printJobListings()
         (*jobsIndex)->print();
 }
 
-void  Employer::printReviews()
+void Employer::printReviews()
 {
     if(reviews.empty())
     {
@@ -61,11 +50,4 @@ void  Employer::printReviews()
     list<shared_ptr<Review>>::reverse_iterator reviewIndex;
     for(reviewIndex = reviews.rbegin(); reviewIndex != reviews.rend(); ++reviewIndex)
         (*reviewIndex)->print();
-}
-
-bool Employer::checkListEmpty() const
-{
-    if(myJobListings.empty())
-        return true;
-    return false;
 }

@@ -26,7 +26,6 @@ class Employer: public User
             void addReview(const string& text, const string& firstName, const string& lastName);
             void printJobListings();
             void printReviews();
-            bool checkListEmpty() const;
         };
 
 
