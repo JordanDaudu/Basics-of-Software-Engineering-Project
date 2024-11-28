@@ -34,8 +34,8 @@ input id, password, first name, last name, age, location, phone number ✅<br />
 
 <h2 align="left"> Employer menu: </h2>
 1.	publish submission ✅<br />
-2.	edit submission ❌<br />
-3.	delete submission ❌<br />
+2.	edit submission ✅<br />
+3.	delete submission ✅<br />
 4.	published jobs ✅<br />
 5.	view profile of candidates to accept / deny 🆗(still needs resume added)<br />
 6.	search for jobs ❌<br />

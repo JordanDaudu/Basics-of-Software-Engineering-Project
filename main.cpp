@@ -54,6 +54,10 @@ int getValidInt()
     }
     return value;
 }
+/// Function that deletes a job listing of a employer with UID, it also deletes any submission to this listing
+/// \param currentUser = pointer to the current user
+/// \param job_list = list of all job listing in the system
+/// \param jobs_Submission_List = list of all job submissions in the system
 void deleteJobListing(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
 {
     int uid;
@@ -71,7 +75,6 @@ void deleteJobListing(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing
         if((*jobsIndex)->getUid() == uid)
         {
             found = true;
-            //currentJobListing = *jobsIndex;
             name = (*jobsIndex)->getName();
             jobsIndex = myJobListings.erase(jobsIndex);
             break;
@@ -84,22 +87,16 @@ void deleteJobListing(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing
     for(jobsSubmissionIndex = jobs_Submission_List.begin(); jobsSubmissionIndex != jobs_Submission_List.end(); jobsSubmissionIndex++)
         if((*jobsSubmissionIndex)->getJob_listingUID() == uid)
         {
-            //currentJobSubmission = *jobsSubmissionIndex;
             jobsSubmissionIndex = jobs_Submission_List.erase(jobsSubmissionIndex);
             jobsSubmissionIndex--;
-            //jobs_Submission_List.remove(currentJobSubmission);
         }
     for(jobsIndex = job_list.begin(); jobsIndex != job_list.end(); jobsIndex++)
         if((*jobsIndex)->getUid() == uid)
         {
-            //name = (*jobsIndex)->getName();
-            //currentJobListing = *jobsIndex;
-            //job_list.remove(currentJobListing);
             jobsIndex = job_list.erase(jobsIndex);
             jobsIndex--;
         }
-    cout << "|Successfully removed job listing \"" << name << "\"" << endl;
-
+    cout << "|Successfully removed job listing \"" << name << "\"!" << endl;
 }
 /// Function to change parameters of a job listing that the employer published
 /// \param currentUser = pointer to the current user
