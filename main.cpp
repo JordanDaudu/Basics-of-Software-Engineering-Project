@@ -54,6 +54,191 @@ int getValidInt()
     }
     return value;
 }
+void deleteJobListing(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
+{
+    int uid;
+    string name;
+    bool found = false;
+    Employer *employer = dynamic_cast<Employer *>(currentUser.get());
+    list<shared_ptr<Job_Listing>>& myJobListings = employer->getMyJobListings(); // getting a reference to the inside list of jobs that employer has
+    list<shared_ptr<Job_Listing>>::iterator jobsIndex;
+    list<shared_ptr<Job_Submission>>::iterator jobsSubmissionIndex;
+    shared_ptr<Job_Listing> currentJobListing;
+    shared_ptr<Job_Submission> currentJobSubmission;
+    cout << "Which job listing you would like to delete? type it's UID: ";
+    uid = getValidInt();
+    for(jobsIndex = myJobListings.begin(); jobsIndex != myJobListings.end(); jobsIndex++)
+        if((*jobsIndex)->getUid() == uid)
+        {
+            found = true;
+            //currentJobListing = *jobsIndex;
+            name = (*jobsIndex)->getName();
+            jobsIndex = myJobListings.erase(jobsIndex);
+            break;
+        }
+    if(!found)
+    {
+        cout << "Error! given UID isn't a listing, returning to main menu..." << endl;
+        return;
+    }
+    for(jobsSubmissionIndex = jobs_Submission_List.begin(); jobsSubmissionIndex != jobs_Submission_List.end(); jobsSubmissionIndex++)
+        if((*jobsSubmissionIndex)->getJob_listingUID() == uid)
+        {
+            //currentJobSubmission = *jobsSubmissionIndex;
+            jobsSubmissionIndex = jobs_Submission_List.erase(jobsSubmissionIndex);
+            jobsSubmissionIndex--;
+            //jobs_Submission_List.remove(currentJobSubmission);
+        }
+    for(jobsIndex = job_list.begin(); jobsIndex != job_list.end(); jobsIndex++)
+        if((*jobsIndex)->getUid() == uid)
+        {
+            //name = (*jobsIndex)->getName();
+            //currentJobListing = *jobsIndex;
+            //job_list.remove(currentJobListing);
+            jobsIndex = job_list.erase(jobsIndex);
+            jobsIndex--;
+        }
+    cout << "|Successfully removed job listing \"" << name << "\"" << endl;
+
+}
+/// Function to change parameters of a job listing that the employer published
+/// \param currentUser = pointer to the current user
+void editJobListing(shared_ptr<User> &currentUser)
+{
+    int choice, uid, type;
+    string text;
+    Employer *employer = dynamic_cast<Employer *>(currentUser.get());
+    list<shared_ptr<Job_Listing>> myJobListings;
+    list<shared_ptr<Job_Listing>>::iterator jobsIndex;
+    cout << "Type the job UID that you would like to edit: ";
+    uid = getValidInt();
+    myJobListings = employer->getMyJobListings();
+    for(jobsIndex = myJobListings.begin(); jobsIndex != myJobListings.end(); jobsIndex++)
+        if((*jobsIndex)->getUid() == uid)
+        {
+            do
+            {
+                cout << "Which field would you like to edit?:" << endl;
+                cout << "1.Name\n2.Description\n3.Position\n4.Experience\n5.Profession\n6.Location\n7.Salary\n8.Go back to main menu" << endl;
+                choice = getValidInt();
+                switch (choice)
+                {
+                    case 1:
+                    {
+                        cout << "Type new name: ";
+                        cin.ignore(); // completely clears the input
+                        while(true)
+                        {
+                            getline(cin, text);
+                            if(!text.empty())
+                                break;
+                            cout << "Name cannot be empty. Please enter again: ";
+                        }
+                        (*jobsIndex)->setName(text);
+                        cout << "|Successfully changed name, going back to editing menu..." << endl;
+                        break;
+                    }
+                    case 2:
+                    {
+                        cout << "Type new description: ";
+                        cin.ignore(); // completely clears the input
+                        while(true)
+                        {
+                            getline(cin, text);
+                            if(!text.empty())
+                                break;
+                            cout << "description cannot be empty. Please enter again: ";
+                        }
+                        (*jobsIndex)->setDescription(text);
+                        cout << "|Successfully changed description, going back to editing menu..." << endl;
+                        break;
+                    }
+                    case 3:
+                    {
+                        do
+                        {
+                            cout << "What is the new position of this job?:\n1.Full-time\n2.Half-time\n";
+                            type = getValidInt();
+                            if(type != 1 && type != 2)
+                                cout << "Error! input not supported, try again" << endl;
+                        }
+                        while(type != 1 && type != 2);
+                        (*jobsIndex)->setPosition(type);
+                        cout << "|Successfully changed position, going back to editing menu..." << endl;
+                        break;
+                    }
+                    case 4:
+                    {
+                        do
+                        {
+                            cout << "How many years of experience are you looking for?:\n0.No experience\n1.1 year\n2.2 years\n3.3 years\n4.4 years\n5.5+ years\n";
+                            type = getValidInt();
+                            if(type < 0 || type > 5)
+                                cout << "Error! input not supported, try again" << endl;
+                        }
+                        while(type < 0 || type > 5);
+                        (*jobsIndex)->setExperience(type);
+                        cout << "|Successfully changed experience, going back to editing menu..." << endl;
+                        break;
+                    }
+                    case 5:
+                    {
+                        do
+                        {
+                            cout << "What profession are you looking for?:\n1.Software engineer\n2.Electrical engineer\n3.Civil engineer\n"
+                                    "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.None\n";
+                            type = getValidInt();
+                            if(type <= 0 || type >= 8)
+                                cout << "Error! input not supported, try again" << endl;
+                        }
+                        while(type <= 0 || type >= 8);
+                        (*jobsIndex)->setProfession(type);
+                        cout << "|Successfully changed profession, going back to editing menu..." << endl;
+                        break;
+                    }
+                    case 6:
+                    {
+                        do
+                        {
+                            cout << "Which new location is this job located?:\n1.Jerusalem region\n2.Northern region\n3.Haifa region\n"
+                                    "4.Central region\n5.Tel-Aviv region\n6.Southern region\n";
+                            type = getValidInt();
+                            if(type <= 0 || type >= 7)
+                                cout << "Error! input not supported, try again" << endl;
+                        }
+                        while(type <= 0 || type >= 7);
+                        (*jobsIndex)->setLocation(type);
+                        cout << "|Successfully changed location, going back to editing menu..." << endl;
+                        break;
+                    }
+                    case 7:
+                    {
+                        do
+                        {
+                            cout << "What is the new salary of the job?\nNote: If you would like to not specify the amount input 0: ";
+                            type = getValidInt();
+                            if(type < 0)
+                                cout << "Error! input not supported, salary can't be negative try again" << endl;
+                        }
+                        while(type < 0);
+                        (*jobsIndex)->setSalary(type);
+                        cout << "|Successfully changed salary, going back to editing menu..." << endl;
+                        break;
+                    }
+                    case 8:
+                        cout << "Going back to main menu..." << endl;
+                        break;
+                    default:
+                        cout << "Error! input not supported, try again" << endl;
+                }
+            }
+            while(choice != 8);
+            return;
+        }
+    cout << "Error! given UID isn't a listing, returning to main menu..." << endl;
+}
+/// Function that prints the employer reviews
+/// \param currentUser = pointer to the current user
 void employerViewOwnReviews(shared_ptr<User> &currentUser)
 {
     Employer *employer = dynamic_cast<Employer *>(currentUser.get());
@@ -217,7 +402,7 @@ void employerViewCandidateSubmission(shared_ptr<User> &currentUser, list<shared_
     do
     {
         cout << "Would you like to accept / reject a submission?\n1.Yes\n2.No" << endl;
-        cin >> choice;
+        choice = getValidInt();
         if(choice != 1 && choice != 2)
             cout << "Error! input not supported, try again" << endl;
     }
@@ -347,6 +532,7 @@ void calculateProfessionAverage(list<shared_ptr<Job_Listing>> &job_list)
 void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     int position, experience, profession, location;
+    bool found = false;
     list<shared_ptr<Job_Listing>>::iterator jobsIndex;
     do
     {
@@ -385,6 +571,7 @@ void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job
     for(jobsIndex = job_list.begin(); jobsIndex != job_list.end(); jobsIndex++)
         if((*jobsIndex)->getPaid())
         {
+            found = true;
             (*jobsIndex)->print();
             cout << "^^^Paid advertisement^^^" << endl;
         }
@@ -392,7 +579,12 @@ void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job
         if((*jobsIndex)->getPosition() == (*jobsIndex)->getPositionID(position) && (*jobsIndex)->getExperience() == experience &&
         (*jobsIndex)->getProfession() == (*jobsIndex)->getProfessionID(profession) && (*jobsIndex)->getLocation() == (*jobsIndex)->getLocationID(location) &&
         !(*jobsIndex)->getPaid())
+        {
+            found = true;
             (*jobsIndex)->print();
+        }
+    if(!found)
+        cout << "No result found!" << endl;
     cout << endl;
 }
 
@@ -425,7 +617,7 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     do
     {
         cout << "What position is this job?:\n1.Full-time\n2.Half-time\n";
-        cin >> position;
+        position = getValidInt();
         if(position != 1 && position != 2)
             cout << "Error! input not supported, try again" << endl;
     }
@@ -433,7 +625,7 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     do
     {
         cout << "How many years of experience are you looking for?:\n0.No experience\n1.1 year\n2.2 years\n3.3 years\n4.4 years\n5.5+ years\n";
-        cin >> experience;
+        experience = getValidInt();
         if(experience < 0 || experience > 5)
             cout << "Error! input not supported, try again" << endl;
     }
@@ -442,7 +634,7 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     {
         cout << "What profession are you looking for?:\n1.Software engineer\n2.Electrical engineer\n3.Civil engineer\n"
                 "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.None\n";
-        cin >> profession;
+        profession = getValidInt();
         if(profession <= 0 || profession >= 8)
             cout << "Error! input not supported, try again" << endl;
     }
@@ -451,7 +643,7 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     {
         cout << "Which location is this job located?:\n1.Jerusalem region\n2.Northern region\n3.Haifa region\n"
                 "4.Central region\n5.Tel-Aviv region\n6.Southern region\n";
-        cin >> location;
+        location = getValidInt();
         if(location <= 0 || location >= 7)
             cout << "Error! input not supported, try again" << endl;
     }
@@ -459,14 +651,14 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     do
     {
         cout << "What is the salary of the job?\nNote: If you would like to not specify the amount input 0: ";
-        cin >> salary;
+        salary = getValidInt();
         if(salary < 0)
             cout << "Error! input not supported, salary can't be negative try again" << endl;
     }
     while(salary < 0);
     cout << "Would you like to pay X amount to advertise your job listing?" << endl;
     cout << "Advertisement makes it so your listing is displayed in every search!\n0.No\n1.Yes" << endl;
-    cin >> paid;
+    paid = getValidInt();
     job_list.push_back(make_shared<Job_Listing>(name, text, position, experience, profession, location, salary, paid, currentUser->getUid(), currentUser));
     // adding to the employer the job to the array of jobs he / she has
     Employer *tmp = dynamic_cast<Employer *>(currentUser.get());
@@ -570,6 +762,16 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
                 cout << "||Successfully added listing!||" << endl;
                 break;
             }
+            case 2:
+            {
+                editJobListing(currentUser);
+                break;
+            }
+            case 3:
+            {
+                deleteJobListing(currentUser, job_list, jobs_Submission_List);
+                break;
+            }
             case 4:
             {
                 employerPublishedJobs(currentUser);
@@ -647,7 +849,7 @@ void registerUser(list<shared_ptr<User>> &user)
 shared_ptr<User> loginUser(list<shared_ptr<User>> &user, shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
 {
     string id, password;
-    cout << "Type you id to login: ";
+    cout << "Type your id to login: ";
     cin >> id;
     cout << "Type your password: ";
     cin >> password;

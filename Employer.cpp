@@ -17,6 +17,7 @@ char *Employer::getType() const
 {
     return "Employer";
 }
+list<shared_ptr<Job_Listing>>& Employer::getMyJobListings() {return myJobListings;}
 
 void Employer::addJobListing(shared_ptr<Job_Listing> job)
 {
