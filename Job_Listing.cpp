@@ -147,8 +147,11 @@ void Job_Listing::setExperience(int choice)
         case 4:
             experience = 4;
             break;
-        default:
+        case 5:
             experience = 5;
+            break;
+        default:
+            experience = 0;
     }
 }
 void Job_Listing::setProfession(int choice)
@@ -218,9 +221,17 @@ void Job_Listing::print() const
     cout << "|Name: " << name << "|" << endl;
     cout << " Description: " << description << endl;
     cout << " - Position: " << position << endl;
-    cout << " - Experience: " << experience << endl;
+    if(experience == 0)
+        cout << " - Experience: " << experience << " No experience needed" << endl;
+    if(experience == 1)
+        cout << " - Experience: " << experience << " Year" << endl;
+    if(experience >= 2)
+        cout << " - Experience: " << experience << " Years" << endl;
     cout << " - Profession: " << profession << endl;
-    cout << " - Location: " << location << endl;
+    if(location == "None")
+        cout << " - Location: No location" << endl;
+    else
+        cout << " - Location: " << location << endl;
     if(salary != 0)
         cout << " - Salary: " << salary << endl;
     cout << " - UID: " << uid << endl;
