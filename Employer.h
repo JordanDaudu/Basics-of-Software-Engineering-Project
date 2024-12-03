@@ -8,6 +8,7 @@
 #include "Job_Listing.h"
 #include "Review.h"
 #include <list>
+#include <memory> // library to manage dynamic memories
 
 class Employer: public User
         {

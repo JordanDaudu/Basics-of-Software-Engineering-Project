@@ -2,6 +2,8 @@
 #include <list> // using to make lists of objects
 #include <limits> // using to check maximums
 #include <cctype> // using library to check if a string is using only letters
+#include <memory> // library to manage dynamic memories
+#include <cstring> // string library
 #include "User.h"
 #include "Candidate.h"
 #include "Employer.h"
@@ -10,6 +12,12 @@
 using namespace std;
 int User::UID = 0, Job_Listing::UID = 0, Job_Submission::UID = 0;
 
+bool is9DigitInt(int num)
+{
+    if(num >= 100000000 && num <= 999999999)
+        return true;
+    return false;
+}
 /// Function to check if string input is using only letters
 /// \return acceptable value (string with letters)
 string getValidString()
@@ -398,11 +406,22 @@ void editProfile(shared_ptr<User> &currentUser)
                 cout << "|Changed location successfully!\n going back to editing menu..." << endl;
                 break;
             case 5:
-                cout << "What is your new phone number?: ";
-                number = getValidInt();
+            {
+                bool is9Digit = false;
+                do
+                {
+                    cout << "Type in your new phone number in format XXXXXXXXX (9 digits without 0 at the start): 0";
+                    number = getValidInt();
+                    if(is9DigitInt(number))
+                        is9Digit = true;
+                    else
+                        cout << "Number given isn't 9 digits, try again" << endl;
+                }
+                while(!is9Digit);
                 currentUser->setPhoneNumber(number);
                 cout << "|Changed phone number successfully!\n going back to editing menu..." << endl;
                 break;
+            }
             case 6:
                 cout << "Not working currently" << endl; // NEED TO BE ADDED!!!!
                 break;
@@ -925,6 +944,7 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
 void registerUser(list<shared_ptr<User>> &user)
 {
     int choice;
+    bool is9Digit = false;
     cout << "Which user are you?\n1.Candidate\n2.Employer" << endl;
     choice = getValidInt();
     if(choice != 1 && choice != 2)
@@ -954,8 +974,17 @@ void registerUser(list<shared_ptr<User>> &user)
             cout << "Error! input not supported, try again" << endl;
     }
     while(location <= 0 || location >= 7);
-    cout << "Type in your phone number: ";
-    phoneNumber = getValidInt();
+    do
+    {
+        // cout << "Type in your phone number: ";
+        cout << "Type in your phone number in format XXXXXXXXX (9 digits without 0 at the start): 0";
+        phoneNumber = getValidInt();
+        if(is9DigitInt(phoneNumber))
+            is9Digit = true;
+        else
+            cout << "Number given isn't 9 digits, try again" << endl;
+    }
+    while(!is9Digit);
     if(choice == 1)
          user.push_back(make_shared<Candidate>(id, password, firstName, lastName, age, location, phoneNumber));
     else if(choice == 2)
@@ -1038,7 +1067,7 @@ int main()
 
     cout << userList.size();
     //adding 3 admin user for testing and deleting a user to see if it works
-    userList.push_back(make_shared<Candidate> ("admin", "1111", "admin", "user", 0, "Jerusalem region", 054));
+    userList.push_back(make_shared<Candidate> ("admin", "1111", "admin", "user", 0, "Jerusalem region", 542508121));
     userList.push_back(make_shared<User> ("bdmin", "1111", "bdmin", "user", 0, "Jerusalem region", 054));
     userList.push_back(make_shared<Employer> ("cdmin", "1111", "cdmin", "user", 0, "Jerusalem region", 054));
     for(i = userList.begin(); i != userList.end(); i++)

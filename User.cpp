@@ -91,5 +91,8 @@ void User::print()
     cout << "Full name: " << firstName << " " << lastName << endl;
     cout << "Age: " << age << endl;
     cout << "Location: " << location << endl;
-    cout << "Phone number: " << phoneNumber << endl;
+    if(phoneNumber >= 100000000 && phoneNumber <= 999999999) // 9 digits
+        cout << "Phone number: 0" << phoneNumber / 10000000 << "-" << phoneNumber % 10000000 << endl;
+    else
+        cout << "Phone number: " << phoneNumber << endl;
 }
