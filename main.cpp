@@ -349,6 +349,12 @@ void addReview(shared_ptr<User> &currentUser, list<shared_ptr<User>> &userList)
     for(userListIndex = userList.begin(); userListIndex != userList.end(); userListIndex++)
         if((*userListIndex)->getFirstName() == firstName && (*userListIndex)->getLastName() == lastName)
         {
+            if(strcmp((*userListIndex)->getType(), "Employer") != 0)
+            {
+                cout << "Error! this user isn't an employer therefore you can't leave a review on it's profile" << endl;
+                cout << "Returning to main menu..." << endl;
+                return;
+            }
             found = true;
             cout << "Type your review: ";
             getline(cin, text);
@@ -358,7 +364,7 @@ void addReview(shared_ptr<User> &currentUser, list<shared_ptr<User>> &userList)
             return;
         }
     if(!found)
-        cout << "Error! user given isn't in the system, returning to main menu" << endl;
+        cout << "Error! user given isn't in the system, returning to main menu..." << endl;
 }
 /// Function to edit profile
 /// \param currentUser = pointer to the current user
@@ -761,6 +767,7 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
     Employer *tmp = dynamic_cast<Employer *>(currentUser.get());
     shared_ptr<Job_Listing> lastAdded = job_list.back();
     tmp->addJobListing(lastAdded);
+    cout << "||Successfully added listing!||" << endl;
 }
 
 /// Function of the menu that the candidate uses
@@ -773,16 +780,16 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
     do
     {
         cout << "\n||Welcome " << currentUser->getFirstName() << "||" << endl;
-        cout << "1.Search for jobs\n2.Apply for job\n3.Upload resume\n4.View Submission history and status\n5.Edit profile\n"
-                "6.Average salary calculator\n7.Leave review on employer\n8.View reviews on employer\n9.Delete account\n"
-                "10.Frequently asked question / Tips\n11.Logout" << endl;
+        cout << "1.Search for jobs\n2.Apply for job\n3.Upload resume\n4.View Submission history and status\n5.View my own profile\n"
+                "6.Edit profile\n7.Average salary calculator\n8.Leave review on employer\n9.View reviews on employer\n"
+                "10.Delete account\n11.Frequently asked question / Tips\n12.Logout" << endl;
         do
         {
             choice = getValidInt(); // checking if choice is valid input (also checking if integer)
-            if(choice <= 0 || choice >= 12)
+            if(choice <= 0 || choice >= 13)
                 cout << "Error! input not supported, try again" << endl;
         }
-        while(choice <= 0 || choice >= 12);
+        while(choice <= 0 || choice >= 13);
         switch (choice)
         {
             case 1:
@@ -802,25 +809,30 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
             }
             case 5:
             {
-                editProfile(currentUser);
+                currentUser->print();
                 break;
             }
             case 6:
             {
-                calculateProfessionAverage(job_list);
+                editProfile(currentUser);
                 break;
             }
             case 7:
             {
-                addReview(currentUser, userList);
+                calculateProfessionAverage(job_list);
                 break;
             }
             case 8:
             {
-                viewReviews(userList);
+                addReview(currentUser, userList);
                 break;
             }
             case 9:
+            {
+                viewReviews(userList);
+                break;
+            }
+            case 10:
             {
                 cout << "Are you sure you would like to delete your user? this action is irreversible!\n1.Yes\n2.No" << endl;
                 do
@@ -836,18 +848,18 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
                     break;
                 }
                 deleteCandidate(userList, currentUser, jobs_Submission_List);
-                choice = 11;
+                choice = 12;
                 break;
             }
             // need to add all functions
-            case 11:
+            case 12:
                 cout << "Leaving system..." << endl;
                 break;
             default:
                 cout << "Error! input not supported, try again" << endl;
         }
     }
-    while(choice != 11);
+    while(choice != 12);
 }
 
 /// Function of the menu that the employer uses
@@ -861,22 +873,21 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
     do
     {
         cout << "\n||Welcome " << currentUser->getFirstName() << "||" << endl;
-        cout << "1.Publish submission\n2.Edit submission\n3.Delete submission\n4.View published jobs\n"
-                "5.View candidate profiles to accept / deny\n""6.Search for jobs\n7.View reviews posted on me\n"
-                "8.Pay to advertise\n9.Delete account\n10.Frequently asked question / Tips\n11.Logout" << endl;
+        cout << "1.Publish submission\n2.Edit submission\n3.Delete submission\n4.View published jobs\n5.View my own profile\n"
+                "6.View candidate profiles to accept / deny\n7.Search for jobs\n8.View reviews posted on me\n"
+                "9.Pay to advertise\n10.Delete account\n11.Frequently asked question / Tips\n12.Logout" << endl;
         do
         {
             choice = getValidInt(); // checking if choice is valid input (also checking if integer)
-            if((choice <= 0 || choice >= 12))
+            if((choice <= 0 || choice >= 13))
                 cout << "Error! input not supported, try again" << endl;
         }
-        while(choice <= 0 || choice >= 12);
+        while(choice <= 0 || choice >= 13);
         switch (choice)
         {
             case 1:
             {
                 publishJobOffer(currentUser, job_list);
-                cout << "||Successfully added listing!||" << endl;
                 break;
             }
             case 2:
@@ -896,20 +907,25 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
             }
             case 5:
             {
-                employerViewCandidateSubmission(currentUser, userList, job_list, jobs_Submission_List);
+                currentUser->print();
                 break;
             }
             case 6:
             {
-                searchJob(currentUser, job_list);
+                employerViewCandidateSubmission(currentUser, userList, job_list, jobs_Submission_List);
                 break;
             }
             case 7:
             {
+                searchJob(currentUser, job_list);
+                break;
+            }
+            case 8:
+            {
                 employerViewOwnReviews(currentUser);
                 break;
             }
-            case 9:
+            case 10:
             {
                 cout << "Are you sure you would like to delete your user? this action is irreversible!\n1.Yes\n2.No" << endl;
                 do
@@ -925,18 +941,18 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
                     break;
                 }
                 deleteEmployer(userList, currentUser, job_list, jobs_Submission_List);
-                choice = 11;
+                choice = 12;
                 break;
             }
             // need to add all functions
-            case 11:
+            case 12:
                 cout << "Leaving system..." << endl;
                 break;
             default:
                 cout << "Error! input not supported, try again" << endl;
         }
     }
-    while(choice != 11);
+    while(choice != 12);
 }
 
 /// Function to register a new user into the system
