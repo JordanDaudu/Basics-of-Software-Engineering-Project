@@ -26,6 +26,7 @@ class Employer: public User
             list<shared_ptr<Job_Listing>>& getMyJobListings();
             void addJobListing(shared_ptr<Job_Listing> job);
             void addReview(const string& text, const string& firstName, const string& lastName);
+            bool isMyJobListingsEmpty() const;
             void printJobListings();
             void printReviews();
         };

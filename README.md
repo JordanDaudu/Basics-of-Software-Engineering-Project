@@ -42,7 +42,7 @@ input id, password, first name, last name, age, location, phone number ✅<br />
 6.	view profile of candidates to accept / deny 🆗(still needs resume added)<br />
 7.	search for jobs ✅<br />
 8.  view reviews posted on me ✅<br />
-9.	pay to advertise ❌<br />
+9.	pay to advertise 🆗(still needs more testing)<br />
 10.	delete account ✅<br />
 11.	Frequently asked questions / tips ❌<br />
 12.	logout ✅<br />

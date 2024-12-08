@@ -165,6 +165,49 @@ void deleteJobListing(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing
         }
     cout << "|Successfully removed job listing \"" << name << "\"!" << endl;
 }
+void payToAdvertiseEmployer(shared_ptr<User> &currentUser)
+{
+    int choice, uid;
+    Employer *employer = dynamic_cast<Employer *>(currentUser.get());
+    if(employer->isMyJobListingsEmpty())
+    {
+        cout << "You have no job listing. Returning to main menu..." << endl;
+        return;
+    }
+    cout << "Would you like to pay X amount to advertise your listing?\n1.Yes\n2.No" << endl;
+    do
+    {
+        choice = getValidInt();
+        if(choice <= 0 || choice >= 3)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(choice <= 0 || choice >= 3);
+    if(choice == 2)
+    {
+        cout << "Returning to main menu..." << endl;
+        return;
+    }
+    list<shared_ptr<Job_Listing>> myJobListings = employer->getMyJobListings();
+    list<shared_ptr<Job_Listing>>::iterator jobsIndex;
+    employer->printJobListings();
+    cout << "\nWhich job listing would you like to pay X to advertise? type corresponding UID: ";
+    uid = getValidInt();
+    for(jobsIndex = myJobListings.begin(); jobsIndex != myJobListings.end(); jobsIndex++)
+        if((*jobsIndex)->getUid() == uid)
+        {
+            if((*jobsIndex)->getPaid())
+            {
+                cout << "You already paid to advertise this listing." << endl;
+                cout << "Returning to main menu..." << endl;
+                return;
+            }
+            (*jobsIndex)->setPaid(true);
+            cout << "|Paid successfully! listing is now advertised." << endl;
+            cout << "Returning to main menu..." << endl;
+            return;
+        }
+    cout << "Error! no job listing that corresponds to this UID, returning to main menu..." << endl;
+}
 /// Function to change parameters of a job listing that the employer published
 /// \param currentUser = pointer to the current user
 void editJobListing(shared_ptr<User> &currentUser)
@@ -925,6 +968,11 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
                 employerViewOwnReviews(currentUser);
                 break;
             }
+            case 9:
+            {
+                payToAdvertiseEmployer(currentUser);
+                break;
+            }
             case 10:
             {
                 cout << "Are you sure you would like to delete your user? this action is irreversible!\n1.Yes\n2.No" << endl;
@@ -1105,39 +1153,5 @@ int main()
         cout << "Goodbye!" << endl;
         return 0;
     }
-
-
-    // ALL THE CODE BELOW IS FOR TESTING PURPOSES
-    /*
-    do
-    {
-        cout << "1.Register\n2.Login\n3.Exit" << endl;
-        cin >> choice;
-        if(choice <= 0 || choice >= 4)
-            cout << "Not supported input, try again.\n ";
-        if(choice == 1)
-            registerUser(userList);
-        else if(choice == 2)
-        {
-            currentUser = loginUser(userList);
-            if(currentUser == nullptr)
-                continue;
-            break;
-        }
-        else if(choice == 3)
-            return 0;
-    }
-    while(choice != 3);
-    for(i = userList.begin(); i != userList.end(); i++)
-        (*i)->print();
-    */
-    if(strcmp(currentUser->getType(), "Candidate") == 0)
-        cout << "Candidate login" << endl;
-    else if(strcmp(currentUser->getType(), "Employer") == 0)
-        cout << "Employer login" << endl;
-    //delete userList.back();
-    userList.pop_back();
-    for(i = userList.begin(); i != userList.end(); i++)
-        (*i)->print();
     return 0;
 }

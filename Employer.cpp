@@ -29,6 +29,13 @@ void Employer::addReview(const string& text, const string& firstName, const stri
     reviews.push_back(make_shared<Review>(text, firstName, lastName));
 }
 
+bool Employer::isMyJobListingsEmpty() const
+{
+    if(myJobListings.empty())
+        return true;
+    return false;
+}
+
 void Employer::printJobListings()
 {
     if(myJobListings.empty())
