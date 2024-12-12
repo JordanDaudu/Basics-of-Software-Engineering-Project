@@ -16,6 +16,8 @@ Review::Review(string text, string firstName, string lastName)
 Review::~Review() {cout << "Review::destructor" << endl;}
 
 string Review::getReview() const {return review;}
+string Review::getReviewerFirstName() const {return firstName;}
+string Review::getReviewerLastName() const {return lastName;}
 
 void Review::print() const
 {

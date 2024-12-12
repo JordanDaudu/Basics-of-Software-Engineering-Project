@@ -72,6 +72,13 @@ string Job_Listing::getPositionID(int choice) const
     else if(choice == 2)
         return "Half-time";
 }
+int Job_Listing::getPositionID() const
+{
+    if(position == "Full-time")
+        return 1;
+    else
+        return 2;
+}
 string Job_Listing::getProfessionID(int choice) const
 {
     switch (choice)
@@ -92,6 +99,24 @@ string Job_Listing::getProfessionID(int choice) const
             return "None";
     }
 }
+int Job_Listing::getProfessionID() const
+{
+    if(profession == "Software engineer")
+        return 1;
+    else if(profession == "Electrical engineer")
+        return 2;
+    else if(profession == "Civil engineer")
+        return 3;
+    else if(profession == "Mechanical engineer")
+        return 4;
+    else if(profession == "Industrial engineering and management")
+        return 5;
+    else if(profession == "Chemical engineering")
+        return 6;
+    else
+        return 0;
+}
+weak_ptr<User> Job_Listing::getEmployer() const {return employer;}
 string Job_Listing::getLocationID(int choice) const
 {
     switch (choice)
@@ -111,6 +136,23 @@ string Job_Listing::getLocationID(int choice) const
         default:
             return "None";
     }
+}
+int Job_Listing::getLocationID() const
+{
+    if(location == "Jerusalem region")
+        return 1;
+    else if(location == "Northern region")
+        return 2;
+    else if(location == "Haifa region")
+        return 3;
+    else if(location == "Central region")
+        return 4;
+    else if(location == "Tel-Aviv region")
+        return 5;
+    else if(location == "Southern region")
+        return 6;
+    else
+        return 0;
 }
 
 void Job_Listing::setName(string text)

@@ -18,6 +18,8 @@ class Review
             Review(string text, string firstName, string lastName);
             ~Review();
             string getReview() const;
+            string getReviewerFirstName() const;
+            string getReviewerLastName() const;
             void print() const;
 
         };

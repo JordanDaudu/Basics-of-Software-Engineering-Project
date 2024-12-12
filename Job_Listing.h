@@ -5,6 +5,7 @@
 #ifndef BASICS_OF_SOFTWARE_ENGINEERING_PROJECT_JOB_LISTING_H
 #define BASICS_OF_SOFTWARE_ENGINEERING_PROJECT_JOB_LISTING_H
 #include <iostream>
+#include <memory>
 #include "User.h"
 using namespace std;
 
@@ -33,11 +34,15 @@ class Job_Listing
             string getDescription() const;
             string getPosition() const;
             string getPositionID(int choice) const;
+            int getPositionID() const;
             int getExperience() const;
             string getProfession() const;
             string getProfessionID(int choice) const;
+            int getProfessionID() const;
             string getLocation() const;
+            weak_ptr<User> getEmployer() const;
             string getLocationID(int choice) const;
+            int getLocationID() const;
             int getUid() const;
             int getEmployerUID() const;
             int getSalary() const;

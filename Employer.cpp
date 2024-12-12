@@ -3,6 +3,8 @@
 //
 
 #include "Employer.h"
+#include "utils.h"
+
 Employer::Employer(): User()
 {}
 Employer::Employer(string id, string password, string firstName, string lastName, int age, string loc,
@@ -18,6 +20,7 @@ char *Employer::getType() const
     return "Employer";
 }
 list<shared_ptr<Job_Listing>>& Employer::getMyJobListings() {return myJobListings;}
+list<shared_ptr<Review>>& Employer::getReviews() {return reviews;}
 
 void Employer::addJobListing(shared_ptr<Job_Listing> job)
 {
@@ -58,4 +61,51 @@ void Employer::printReviews()
     list<shared_ptr<Review>>::reverse_iterator reviewIndex;
     for(reviewIndex = reviews.rbegin(); reviewIndex != reviews.rend(); ++reviewIndex)
         (*reviewIndex)->print();
+}
+void Employer::printFAQ() const
+{
+    int choice;
+    do
+    {
+        cout << "\nList of common questions:" << endl;
+        cout << "1. Can I use the same account as an employer and a candidate?" << endl;
+        cout << "2. How much time does it take after uploading a job to accept it to the system?" << endl;
+        cout << "3. How many jobs offers can I submit at the same time?" << endl;
+        cout << "4. How do I see the candidates that apply for my jobs?" << endl;
+        cout << "5. Can I edit my submission after uploading it?" << endl;
+        cout << "6. Exit" << endl;
+        do
+        {
+            choice = getValidInt();
+            if(choice <= 0 || choice >= 7)
+                cout << "Error! input not supported, try again" << endl;
+        }
+        while(choice <= 0 || choice >= 7);
+        switch (choice)
+        {
+            case 1: {
+                cout << "No, each account has different features, so it is impossible." << endl;
+                break;
+            }
+            case 2: {
+                cout << "Instantly, our system immediately uploads the submission to the jobs list." << endl;
+                break;
+            }
+            case 3: {
+                cout << "There is no limit." << endl;
+                break;
+            }
+            case 4: {
+                cout << "In the menu, there is a option \"View candidate profiles to accept / deny\" click it." << endl;
+                break;
+            }
+            case 5: {
+                cout << "Yes, it is possible there is an option \"Edit job offer\" in the menu to edit submissions." << endl;
+                break;
+            }
+            default:
+                cout << "Hope u got the information u want, redirecting to main menu..." << endl;
+        }
+    }
+    while (choice != 6);
 }

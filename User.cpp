@@ -86,6 +86,23 @@ void User::setLocation(int choice)
             location = "None";
     }
 }
+int User::getLocationID() const
+{
+    if(location == "Jerusalem region")
+        return 1;
+    else if(location == "Northern region")
+        return 2;
+    else if(location == "Haifa region")
+        return 3;
+    else if(location == "Central region")
+        return 4;
+    else if(location == "Tel-Aviv region")
+        return 5;
+    else if(location == "Southern region")
+        return 6;
+    else
+        return 0;
+}
 void User::print()
 {
     cout << "Full name: " << firstName << " " << lastName << endl;
@@ -96,3 +113,4 @@ void User::print()
     else
         cout << "Phone number: " << phoneNumber << endl;
 }
+void User::printFAQ() const {}

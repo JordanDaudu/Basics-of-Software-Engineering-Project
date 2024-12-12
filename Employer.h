@@ -24,11 +24,13 @@ class Employer: public User
             virtual ~Employer();
             virtual char *getType() const;
             list<shared_ptr<Job_Listing>>& getMyJobListings();
+            list<shared_ptr<Review>>& getReviews();
             void addJobListing(shared_ptr<Job_Listing> job);
             void addReview(const string& text, const string& firstName, const string& lastName);
             bool isMyJobListingsEmpty() const;
             void printJobListings();
             void printReviews();
+            virtual void printFAQ() const;
         };
 
 

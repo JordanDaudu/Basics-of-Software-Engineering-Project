@@ -33,6 +33,7 @@ class User
             string getLastName() const;
             int getAge() const;
             string getLocation() const;
+            int getLocationID() const;
             unsigned int getPhoneNumber() const;
             int getUid() const;
             void setFirstName(string name);
@@ -41,6 +42,9 @@ class User
             void setLocation(int choice);
             void setPhoneNumber(int phoneNum);
             virtual void print();
+            virtual void printFAQ() const;
+            virtual void uploadResume(const string& resumeFilePath) {};
+            virtual void saveResume() {};
         };
 
 
