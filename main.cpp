@@ -799,9 +799,14 @@ void editJobListing(shared_ptr<User> &currentUser)
     Employer *employer = dynamic_cast<Employer *>(currentUser.get());
     list<shared_ptr<Job_Listing>> myJobListings;
     list<shared_ptr<Job_Listing>>::iterator jobsIndex;
+    myJobListings = employer->getMyJobListings();
+    cout << "tour published jobs: " << endl;
+    for (jobsIndex = myJobListings.begin(); jobsIndex != myJobListings.end(); jobsIndex++) {
+        if ((*jobsIndex)->getEmployerUID() == currentUser->getUid())
+            (*jobsIndex)->print();
+    }
     cout << "Type the job UID that you would like to edit: ";
     uid = getValidInt();
-    myJobListings = employer->getMyJobListings();
     for(jobsIndex = myJobListings.begin(); jobsIndex != myJobListings.end(); jobsIndex++)
         if((*jobsIndex)->getUid() == uid)
         {
