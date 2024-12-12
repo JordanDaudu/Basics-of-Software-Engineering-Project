@@ -155,11 +155,11 @@ void Candidate::loadResume()
     }
     databaseFile.close();
 
-    if (this->gotResume) {
-        cout << "||Resume loaded successfully for candidate ID: " << this->getId() << "||"<< endl;
-    } else {
-        cout << "||No resume found for candidate ID: " << this->getId() << "||" << endl;
-    }
+//    if (this->gotResume) {
+//        cout << "||Resume loaded successfully for candidate ID: " << this->getId() << "||"<< endl;
+//    } else {
+//        cout << "||No resume found for candidate ID: " << this->getId() << "||" << endl;
+//    }
 }
 
 // Function to delete a resume by candidate ID

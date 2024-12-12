@@ -89,8 +89,9 @@ void updateUserInFile(const shared_ptr<User>& currentUser) {
 }
 
 /// Function to update file of job listing in real time
-/// \param job
-void updateJobInFile(const shared_ptr<Job_Listing>& job) {
+/// \param job = job offer
+/// \param newName = Have to provide name as this is key to identify when changing to a new one
+void updateJobInFile(const shared_ptr<Job_Listing>& job, const string& newName) {
     ifstream inputFile(JOBS_DATA);
 
     if (!inputFile.is_open()) {
@@ -106,9 +107,6 @@ void updateJobInFile(const shared_ptr<Job_Listing>& job) {
         stringstream ss(line);
         string name, description, employerIdFromFile;
         int position, experience, profession, location, salary, paid;
-        weak_ptr<User> currentEmployer = job->getEmployer();
-        // Lock the weak_ptr to get a shared_ptr
-        shared_ptr<User> employer = currentEmployer.lock();
 
         // Extract fields from the line
         getline(ss, name, ',');
@@ -128,10 +126,10 @@ void updateJobInFile(const shared_ptr<Job_Listing>& job) {
         getline(ss, employerIdFromFile);
 
         // Check if this line matches the job to be updated
-        if (employerIdFromFile == employer->getId()) {
+        if (name == job->getName()) {
             // Update the record with the new details
             stringstream updatedLine;
-            updatedLine << job->getName() << ","
+            updatedLine << newName << ","
                         << job->getDescription() << ","
                         << job->getPositionID() << ","
                         << job->getExperience() << ","
@@ -147,7 +145,6 @@ void updateJobInFile(const shared_ptr<Job_Listing>& job) {
         }
     }
     inputFile.close();
-
     // Write the updated lines back to the file
     ofstream outputFile(JOBS_DATA, ios::trunc);
     if (!outputFile.is_open()) {
@@ -399,7 +396,7 @@ void loadJobApplications(const list<shared_ptr<User>>& userList, const list<shar
             getline(ss, employerId, ',');   // Employer's id (name/email)
             getline(ss, jobName, ',');      // Job name
 
-            // Convert candidate and employer ids to uids
+            // Convert candidate and employer ids to uid's
             shared_ptr<User> candidate = nullptr;
             shared_ptr<User> employer = nullptr;
 
@@ -783,7 +780,7 @@ void payToAdvertiseEmployer(shared_ptr<User> &currentUser)
                 return;
             }
             (*jobsIndex)->setPaid(true);
-            updateJobInFile(*jobsIndex);
+            updateJobInFile(*jobsIndex, (*jobsIndex)->getName());
             cout << "|Paid successfully! listing is now advertised." << endl;
             cout << "Returning to main menu..." << endl;
             return;
@@ -792,10 +789,11 @@ void payToAdvertiseEmployer(shared_ptr<User> &currentUser)
 }
 /// Function to change parameters of a job listing that the employer published
 /// \param currentUser = pointer to the current user
-void editJobListing(shared_ptr<User> &currentUser)
+void editJobListing(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
 {
     int choice, uid, type;
     string text;
+    bool nameTaken = false;
     Employer *employer = dynamic_cast<Employer *>(currentUser.get());
     list<shared_ptr<Job_Listing>> myJobListings;
     list<shared_ptr<Job_Listing>>::iterator jobsIndex;
@@ -823,11 +821,21 @@ void editJobListing(shared_ptr<User> &currentUser)
                         cin.ignore(); // completely clears the input
                         while(true)
                         {
+                            nameTaken = false;
                             getline(cin, text);
+                            for(auto i = job_list.begin(); i != job_list.end(); i++)
+                                if((*i)->getName() == text)
+                                {
+                                    cout << "This job name is already used, please input another name: ";
+                                    nameTaken = true;
+                                }
+                            if(nameTaken)
+                                continue;
                             if(!text.empty())
                                 break;
                             cout << "Name cannot be empty. Please enter again: ";
                         }
+                        updateJobInFile(*jobsIndex, text);
                         (*jobsIndex)->setName(text);
                         cout << "|Successfully changed name, going back to editing menu..." << endl;
                         break;
@@ -925,8 +933,8 @@ void editJobListing(shared_ptr<User> &currentUser)
                     default:
                         cout << "Error! input not supported, try again" << endl;
                 }
-                if (choice != 8) // Update the job listing in the file
-                    updateJobInFile(*jobsIndex);
+                if (choice != 8 && choice != 1) // Update the job listing in the file
+                    updateJobInFile(*jobsIndex, (*jobsIndex)->getName());
             }
             while(choice != 8);
             return;
@@ -968,7 +976,6 @@ void addReview(shared_ptr<User> &currentUser, list<shared_ptr<User>> &userList)
 {
     string firstName, lastName, text;
     list<shared_ptr<User>>::iterator userListIndex;
-    bool found = false;
     cout << "To leave a review type the employer first name and last name" << endl;
     cout << "First name: ";
     cin.ignore();
@@ -984,7 +991,6 @@ void addReview(shared_ptr<User> &currentUser, list<shared_ptr<User>> &userList)
                 cout << "Returning to main menu..." << endl;
                 return;
             }
-            found = true;
             cout << "Type your review: ";
             getline(cin, text);
             Employer *employer = dynamic_cast<Employer *>(userListIndex->get());
@@ -994,8 +1000,7 @@ void addReview(shared_ptr<User> &currentUser, list<shared_ptr<User>> &userList)
             cout << "|Added review successfully! returning to main menu..." << endl;
             return;
         }
-    if(!found)
-        cout << "Error! user given isn't in the system, returning to main menu..." << endl;
+    cout << "Error! user given isn't in the system, returning to main menu..." << endl;
 }
 /// Function to edit profile
 /// \param currentUser = pointer to the current user
@@ -1353,13 +1358,22 @@ void publishJobOffer(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>
 {
     string name, text;
     int position, experience, profession, location, salary;
-    bool paid;
+    bool paid, nameTaken = false;
     cout << "||Publishing a job offer||" << endl;
     cout << "Type the name of the job offer: ";
     cin.ignore(); // completely clears the input
     while(true)
     {
+        nameTaken = false;
         getline(cin, name);
+        for(auto i = job_list.begin(); i != job_list.end(); i++)
+            if((*i)->getName() == name)
+            {
+                cout << "This job name is already used, please input another name: ";
+                nameTaken = true;
+            }
+        if(nameTaken)
+            continue;
         if(!name.empty())
             break;
         cout << "Name cannot be empty. Please enter again: ";
@@ -1585,7 +1599,7 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
             }
             case 2:
             {
-                editJobListing(currentUser);
+                editJobListing(currentUser, job_list);
                 break;
             }
             case 3:
@@ -1662,7 +1676,7 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
 void registerUser(list<shared_ptr<User>> &user)
 {
     int choice;
-    bool is9Digit = false;
+    bool is9Digit = false, idTaken = false;
     cout << "Which user are you?\n1.Candidate\n2.Employer" << endl;
     choice = getValidInt();
     if(choice != 1 && choice != 2)
@@ -1672,8 +1686,18 @@ void registerUser(list<shared_ptr<User>> &user)
     }
     string id, password, firstName, lastName;
     int age, location, phoneNumber;
-    cout << "Type your id: ";
-    cin >> id;
+    do
+    {
+        idTaken = false;
+        cout << "Type your id: ";
+        cin >> id;
+        for(auto i = user.begin(); i != user.end(); i++)
+            if((*i)->getId() == id)
+                idTaken = true;
+        if(idTaken)
+            cout << "This id is already used by another user, please input another id." << endl;
+    }
+    while(idTaken);
     cout << "Type your password: ";
     cin >> password;
     cin.ignore();
@@ -1781,7 +1805,6 @@ shared_ptr<User> mainMenu(list<shared_ptr<User>> &user, list<shared_ptr<Job_List
 
 int main()
 {
-    int choice;
     // using shared ptr, so it will delete automatically without needing delete
     list<shared_ptr<User>> userList;
     shared_ptr<User> currentUser;
