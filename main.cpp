@@ -800,7 +800,7 @@ void editJobListing(shared_ptr<User> &currentUser)
     list<shared_ptr<Job_Listing>> myJobListings;
     list<shared_ptr<Job_Listing>>::iterator jobsIndex;
     myJobListings = employer->getMyJobListings();
-    cout << "tour published jobs: " << endl;
+    cout << "your published jobs: " << endl;
     for (jobsIndex = myJobListings.begin(); jobsIndex != myJobListings.end(); jobsIndex++) {
         if ((*jobsIndex)->getEmployerUID() == currentUser->getUid())
             (*jobsIndex)->print();
