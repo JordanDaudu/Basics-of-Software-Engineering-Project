@@ -1,7 +1,7 @@
 # Basics-of-Software-Engineering-Project
 
 <h3 align="center">Basic git commands:<h3>
-  <img align="right" alt="IMAGE" src="https://raw.githubusercontent.com/JordanDaudu/Basics-of-Software-Engineering-Project/refs/heads/main/Photos/41019130-CCDE-4F04-B7AC-3274FC7193CF.jpeg?token=GHSAT0AAAAAACZ6XKUVZH44THDSSVQZXVMCZ23MFUA" width="350" height="150" />
+  <img align="right" alt="IMAGE" src="https://raw.githubusercontent.com/JordanDaudu/Basics-of-Software-Engineering-Project/refs/heads/main/Photos/41019130-CCDE-4F04-B7AC-3274FC7193CF.jpeg?token=GHSAT0AAAAAACZ6XKUVZH44THDSSVQZXVMCZ23MFUA" width="300" height="150" />
 git init - create dir and open new "project"<br />
 git add - מכין קבצים שארצה להכניס לבראנץ<br />
 git commit -m "" - שומר את הקבצים שהכנתי בבראנץ<br />
