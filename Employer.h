@@ -30,6 +30,7 @@ class Employer: public User
             bool isMyJobListingsEmpty() const;
             void printJobListings();
             void printReviews();
+            virtual void printMenu() const;
             virtual void printFAQ() const;
         };
 

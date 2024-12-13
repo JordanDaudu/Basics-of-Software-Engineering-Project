@@ -603,7 +603,7 @@ string getValidString()
         if (isValid)
             break; // exit loop if input is valid
         else
-            cout << "Invalid input. Please enter letters only." << endl;
+            cerr << "Invalid input. Please enter letters only." << endl;
     }
     return value;
 }
@@ -618,7 +618,7 @@ int getValidInt()
             break;
         else
         {
-            cout << "Invalid input. please enter a valid input." << endl;
+            cerr << "Invalid input. please enter a valid input." << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignore invalid input
         }
@@ -1010,7 +1010,7 @@ void editProfile(shared_ptr<User> &currentUser)
     string text;
     do
     {
-        cout << "What would you like to edit?\n1.First name\n2.Last name\n3.Age\n4.Location\n5.Phone number\n6.Resume (not working currently)\n7.Go back to main menu" << endl;
+        cout << "What would you like to edit?\n1.First name\n2.Last name\n3.Age\n4.Location\n5.Phone number\n6.Resume\n7.Go back to main menu" << endl;
         choice = getValidInt();
         switch (choice)
         {
@@ -1111,7 +1111,7 @@ void employerViewCandidateSubmission(shared_ptr<User> &currentUser, list<shared_
             for(candidateIndex = userList.begin(); candidateIndex != userList.end(); candidateIndex++)
                 if((*candidateIndex)->getUid() == (*jobSubmissionIndex)->getCandidateUID())
                 {
-                    cout << "Candidate information: " << endl;
+                    cout << "◜──Candidate information───◝" << endl;
                     (*candidateIndex)->print();
                     Candidate* candidate = dynamic_cast<Candidate*>((*candidateIndex).get());
                     cout << candidate->getResume();
@@ -1468,10 +1468,11 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
     int choice;
     do
     {
-        cout << "\n||Welcome " << currentUser->getFirstName() << "||" << endl;
-        cout << "1.Search for jobs\n2.Apply for job\n3.Upload resume\n4.View Submission history and status\n5.View my own profile\n"
-                "6.Edit profile\n7.Average salary calculator\n8.Leave review on employer\n9.View reviews on employer\n"
-                "10.Delete account\n11.Frequently asked questions / Tips\n12.Logout" << endl;
+        currentUser->printMenu();
+        //cout << "\n||Welcome " << currentUser->getFirstName() << "||" << endl;
+        //cout << "1.Search for jobs\n2.Apply for job\n3.Upload resume\n4.View Submission history and status\n5.View my own profile\n"
+        //        "6.Edit profile\n7.Average salary calculator\n8.Leave review on employer\n9.View reviews on employer\n"
+        //        "10.Delete account\n11.Frequently asked questions / Tips\n12.Logout" << endl;
         do
         {
             choice = getValidInt(); // checking if choice is valid input (also checking if integer)
@@ -1579,10 +1580,11 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
     int choice;
     do
     {
-        cout << "\n||Welcome " << currentUser->getFirstName() << "||" << endl;
-        cout << "1.Publish job offer\n2.Edit job offer\n3.Delete job offer\n4.View published jobs\n5.View my own profile\n"
-                "6.View candidate profiles to accept / deny\n7.Search for jobs\n8.View reviews posted on me\n"
-                "9.Pay to advertise\n10.Delete account\n11.Frequently asked question / Tips\n12.Logout" << endl;
+        currentUser->printMenu();
+        //cout << "\n||Welcome " << currentUser->getFirstName() << "||" << endl;
+        //cout << "1.Publish job offer\n2.Edit job offer\n3.Delete job offer\n4.View published jobs\n5.View my own profile\n"
+        //        "6.View candidate profiles to accept / deny\n7.Search for jobs\n8.View reviews posted on me\n"
+        //        "9.Pay to advertise\n10.Delete account\n11.Frequently asked question / Tips\n12.Logout" << endl;
         do
         {
             choice = getValidInt(); // checking if choice is valid input (also checking if integer)
@@ -1701,8 +1703,14 @@ void registerUser(list<shared_ptr<User>> &user)
     cout << "Type your password: ";
     cin >> password;
     cin.ignore();
-    cout << "Type you first name: ";
-    firstName = getValidString();
+    do
+    {
+        cout << "Type you first name: ";
+        firstName = getValidString();
+        if (firstName.length() > 44)
+            cerr << "Error: First name is too long, try again with less characters: ";
+    }
+    while(firstName.length() > 44);
     cout << "Type your last name: ";
     lastName = getValidString();
     cout << "What is your age?: ";
@@ -1718,7 +1726,6 @@ void registerUser(list<shared_ptr<User>> &user)
     while(location <= 0 || location >= 7);
     do
     {
-        // cout << "Type in your phone number: ";
         cout << "Type in your phone number in format XXXXXXXXX (9 digits without 0 at the start): 0";
         phoneNumber = getValidInt();
         if(is9DigitInt(phoneNumber))

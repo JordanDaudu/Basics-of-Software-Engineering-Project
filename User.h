@@ -42,6 +42,7 @@ class User
             void setLocation(int choice);
             void setPhoneNumber(int phoneNum);
             virtual void print();
+            virtual void printMenu() const {};
             virtual void printFAQ() const;
             virtual void uploadResume(const string& resumeFilePath) {};
             virtual void saveResume() {};

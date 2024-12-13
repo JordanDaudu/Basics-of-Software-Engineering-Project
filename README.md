@@ -28,7 +28,7 @@ Input id, password, first name, last name, age, location, phone number ✅<br />
 3.	Upload resume ✅<br />
 4.	View submission(s) history and status ✅<br />
 5.  View my own profile ✅<br />
-6.	Edit profile 🆗(still needs resume checked further)<br />
+6.	Edit profile ✅(still needs resume checked further)<br />
 7.	Average salary calculator ✅<br />
 8.	Leave review on employer ✅<br />
 9.  View reviews on employer ✅<br />
@@ -43,7 +43,7 @@ Input id, password, first name, last name, age, location, phone number ✅<br />
 3.	delete job offer ✅<br />
 4.	View published jobs ✅<br />
 5.  View my own profile ✅<br />
-6.	View candidate profiles to accept / deny 🆗(still needs to check properly resume)<br />
+6.	View candidate profiles to accept / deny ✅(still needs to check properly resume)<br />
 7.	Search for jobs ✅<br />
 8.  View reviews posted on me ✅<br />
 9.	Pay to advertise ✅<br />

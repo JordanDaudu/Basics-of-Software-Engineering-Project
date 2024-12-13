@@ -26,6 +26,7 @@ class Candidate: virtual public User
             virtual char *getType() const;
             string getResume() const;
             bool getGotResume() const;
+            virtual void printMenu() const;
             virtual void printFAQ() const;
             virtual void uploadResume(const string& resumeFilePath);
             static void deleteResume(const std::string& userId);
