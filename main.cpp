@@ -304,15 +304,17 @@ void deleteJobsByEmployerId(const string& employerId) {
     while (getline(inputFile, line)) {
         stringstream ss(line);
         string jobEmployerId;
+        string originalLine = line;  // Save the entire line to preserve its content
+
         // Assuming employer ID is the 9th comma-separated value in the job data
         for (int i = 0; i < 8; ++i) {
             getline(ss, line, ',');  // Skip the first 8 values
         }
         getline(ss, jobEmployerId, ',');  // Get the employer ID
 
-        // If the employer ID doesn't match the one we want to delete, keep the line
+        // If the employer ID doesn't match the one we want to delete, keep the original line
         if (jobEmployerId != employerId) {
-            lines.push_back(line);
+            lines.push_back(originalLine);
         }
     }
     inputFile.close();
@@ -1029,11 +1031,21 @@ void editProfile(shared_ptr<User> &currentUser)
                 cout << "|Changed last name successfully!\n going back to editing menu..." << endl;
                 break;
             case 3:
+            {
                 cout << "Type your age: ";
-                number = getValidInt();
+                do
+                {
+                    number = getValidInt();
+                    if(number < 0)
+                        cerr << "Error! age cannot be a negative number, try again: ";
+                    else if(number >= 0 && number < 18)
+                        cout << "You can't change your age to below 18, try again: " << endl;
+                }
+                while(number < 18);
                 currentUser->setAge(number);
                 cout << "|Changed age successfully!\n going back to editing menu..." << endl;
                 break;
+            }
             case 4:
                 cout << "What is your new region of living?: " << endl;
                 cout << "1.Jerusalem region\n2.Northern region\n3.Haifa region\n4.Central region\n5.Tel-Aviv region\n6.Southern region\n";
@@ -1122,7 +1134,7 @@ void employerViewCandidateSubmission(shared_ptr<User> &currentUser, list<shared_
     }
     if(!found)
     {
-        cout << "No submission to view yet." << endl;
+        cout << "No submission(s) to view yet." << endl;
         return;
     }
     cout << "-------------------------------" << endl;
@@ -1187,7 +1199,7 @@ void candidateViewSubmissionHistory(shared_ptr<User> &currentUser, list<shared_p
         }
     }
     if(!found)
-        cout << "No submission." << endl;
+        cout << "No submission(s)." << endl;
 }
 /// function for candidate to apply to a job listing
 /// \param currentUser = pointer to the current user
@@ -1249,8 +1261,8 @@ void calculateProfessionAverage(list<shared_ptr<Job_Listing>> &job_list)
 {
     int choice;
     int size = 0;
-    int sum = 0;
-    float average;
+    float sum = 0.0;
+    float average = 0.0;
     list<shared_ptr<Job_Listing>>::iterator jobsIndex;
     do
     {
@@ -1262,23 +1274,25 @@ void calculateProfessionAverage(list<shared_ptr<Job_Listing>> &job_list)
     }
     while(choice <= 0 || choice >= 7);
     for(jobsIndex = job_list.begin(); jobsIndex != job_list.end(); jobsIndex++)
-        if((*jobsIndex)->getProfession() == (*jobsIndex)->getProfessionID(choice))
+        if((*jobsIndex)->getProfession() == (*jobsIndex)->getProfessionID(choice) && (*jobsIndex)->getSalary() > 0)
         {
             sum += (*jobsIndex)->getSalary();
             size++;
         }
-    average = float(sum) / float(size);
-    if(average == 0.0)
-        cout << "There is no job in the system with a salary in this profession." << endl;
-    else
-        cout << "The average is: " << average << endl;
+    if(size == 0)
+    {
+        cout << "There is no job in the system with a specified salary in this profession." << endl;
+        return;
+    }
+    average = sum / float(size);
+    cout << "The average is: " << average << endl;
 }
 /// Search function for Candidate
 /// \param currentUser = pointer to the current user
 /// \param job_list = list of all job listing in the system
-void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list)
+void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
 {
-    int position, experience, profession, location;
+    int position, experience, profession, location, choice = 0;
     bool found = false;
     list<shared_ptr<Job_Listing>>::iterator jobsIndex;
     do
@@ -1299,7 +1313,7 @@ void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job
                     "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.No profession\n";
         else if(strcmp(currentUser->getType(), "Employer") == 0)
             cout << "In which profession are you looking to search jobs?:\n1.Software engineer\n2.Electrical engineer\n3.Civil engineer\n"
-                    "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.None\n";
+                    "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.No profession\n";
         profession = getValidInt();
         if(profession <= 0 || profession >= 8)
             cout << "Error! input not supported, try again" << endl;
@@ -1347,7 +1361,23 @@ void searchJob(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>> &job
             (*jobsIndex)->print();
         }
     if(!found)
-        cout << "No result found!" << endl;
+    {
+        cout << "No result found!\n" << endl;
+        return;
+    }
+    if(strcmp(currentUser->getType(), "Candidate") == 0)
+    {
+        do
+        {
+            cout << "\nWould you like to apply for a job?\n1. Yes\n2. No" << endl;
+            choice = getValidInt();
+            if(choice <= 0 || choice >= 3)
+                cout << "Error! input not supported, try again" << endl;
+        }
+        while(choice <= 0 || choice >= 3);
+    }
+    if(choice == 1)
+        candidateApplyForJob(currentUser, job_list, jobs_Submission_List);
     cout << endl;
 }
 
@@ -1484,7 +1514,7 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
         {
             case 1:
             {
-                searchJob(currentUser, job_list);
+                searchJob(currentUser, job_list, jobs_Submission_List);
                 break;
             }
             case 2:
@@ -1626,7 +1656,7 @@ void employerMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUse
             }
             case 7:
             {
-                searchJob(currentUser, job_list);
+                searchJob(currentUser, job_list, jobs_Submission_List);
                 break;
             }
             case 8:
@@ -1714,7 +1744,18 @@ void registerUser(list<shared_ptr<User>> &user)
     cout << "Type your last name: ";
     lastName = getValidString();
     cout << "What is your age?: ";
-    age = getValidInt();
+    do
+    {
+        age = getValidInt();
+        if(age < 0)
+            cerr << "Error! age cannot be a negative number, try again: ";
+        else if(age >= 0 && age < 18)
+        {
+            cout << "Minors are not accepted in the system, returning to main menu..." << endl;
+            return;
+        }
+    }
+    while(age < 18);
     cout << "What is your region of living?: " << endl;
     cout << "1.Jerusalem region\n2.Northern region\n3.Haifa region\n4.Central region\n5.Tel-Aviv region\n6.Southern region\n";
     do

@@ -92,7 +92,7 @@ void Candidate::printFAQ() const
                 break;
             }
             case 4: {
-                cout << "After searching you will be given job offers with uid, click \"apply for job\" and use the uid of the job offer." << endl;
+                cout << "After searching you will be given job offers with uid, you can apply immeditely or in the main menu with a uid  click \"apply for job\" and use the uid of the job offer." << endl;
                 break;
             }
             case 5: {
