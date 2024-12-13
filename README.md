@@ -22,7 +22,7 @@ git checkout branch_name - יעביר אותנו לבראנץ | ענף אחר<br
 Input id, password, first name, last name, age, location, phone number ✅<br />
 
 <h2 align="left"> Candidate menu: </h2>
-<img align="right" alt="IMAGE" src="Photos/BAE90757-4EFC-4197-8774-21D54F4CC575.jpeg" width="300" height="340" />
+<img align="right" alt="IMAGE" src="Photos/BE280ACA-44AA-4E3E-80D0-95196ECF2846.jpeg" width="340" height="340" />
 1.	Search for jobs ✅<br />
 2.	Apply for job ✅<br />
 3.	Upload resume ✅<br />
@@ -37,7 +37,7 @@ Input id, password, first name, last name, age, location, phone number ✅<br />
 12.	Logout ✅<br />
 
 <h2 align="left"> Employer menu: </h2>
-<img align="right" alt="IMAGE" src="Photos/9C1C3B74-A978-40DF-A178-D6F3A8669BAE.jpeg" width="300" height="340" />
+<img align="right" alt="IMAGE" src="Photos/EA17A15D-AC15-4403-A47A-9009E6567693.jpeg" width="340" height="340" />
 1.	publish job offer ✅<br />
 2.	edit job offer ✅<br />
 3.	delete job offer ✅<br />
