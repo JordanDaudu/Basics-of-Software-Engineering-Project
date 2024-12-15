@@ -1859,6 +1859,7 @@ shared_ptr<User> mainMenu(list<shared_ptr<User>> &user, list<shared_ptr<Job_List
 int main()
 {
     // using shared ptr, so it will delete automatically without needing delete
+    // test
     list<shared_ptr<User>> userList;
     shared_ptr<User> currentUser;
     list<shared_ptr<User>>::iterator i;
