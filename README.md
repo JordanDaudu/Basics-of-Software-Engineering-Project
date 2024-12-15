@@ -43,7 +43,7 @@ Input id, password, first name, last name, age, location, phone number ✅<br />
 3.	delete job offer ✅<br />
 4.	View published jobs ✅<br />
 5.  View my own profile ✅<br />
-6.	View candidate profiles to accept / deny ✅(still needs to check properly resume)<br />
+6.	View candidate profiles to accept / deny ✅<br />
 7.	Search for jobs ✅<br />
 8.  View reviews posted on me ✅<br />
 9.	Pay to advertise ✅<br />
@@ -62,3 +62,5 @@ There is 4 data files in total:<br />
 2. Jobs data - stores all job listings / offers.<br />
 3. Submissions data - Stores all submissions by candidate for job offers.<br />
 4. Candidate Resumes - Stores information on resumes.<br />
+
+<h2 align="left"> Data Flow Diagram </h2>
