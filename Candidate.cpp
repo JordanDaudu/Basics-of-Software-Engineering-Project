@@ -5,7 +5,7 @@
 #include "Candidate.h"
 #include "utils.h"
 #include <vector>
-#define CANDIDATE_RESUMES "DataBase/Candidate Resumes"
+#define CANDIDATE_RESUMES "../DataBase/Candidate Resumes"
 
 Candidate::Candidate(): User()
 {gotResume = false; loadResume();}

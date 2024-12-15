@@ -14,9 +14,9 @@
 #include "Job_Listing.h"
 #include "Job_Submission.h"
 #include "utils.h"
-#define USERS_DATA "DataBase/Users Data"
-#define JOBS_DATA "DataBase/Jobs Data"
-#define SUBMISSIONS_DATA "DataBase/Submissions Data"
+#define USERS_DATA "../DataBase/Users Data"
+#define JOBS_DATA "../DataBase/Jobs Data"
+#define SUBMISSIONS_DATA "../DataBase/Submissions Data"
 using namespace std;
 namespace fs = filesystem;
 int User::UID = 0, Job_Listing::UID = 0, Job_Submission::UID = 0;
@@ -1087,7 +1087,7 @@ void editProfile(shared_ptr<User> &currentUser)
                 Candidate* candidate = dynamic_cast<Candidate*>((currentUser).get());
                 cout << "Type the new file name in Resumes you want to change your resume to: ";
                 cin >> filepath;
-                candidate->changeResume("Resumes/"+filepath);
+                candidate->changeResume("../Resumes/"+filepath);
                 break;
             }
             case 7:
@@ -1538,7 +1538,7 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
                 string path;
                 cout << "Type the file name in Resumes:" << endl;
                 cin >> path;
-                currentUser->uploadResume("Resumes/"+path);
+                currentUser->uploadResume("../Resumes/"+path);
                 break;
             }
             case 4:

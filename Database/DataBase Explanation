@@ -1,0 +1,14 @@
+Explanation of users data:
+Candidate / Employer
+ID, password, first name, last name, age, id of location, phone number
+Employer only
+ID, password, first name, last name, age, id of location, phone number|first name, last name, text of review|first name, last name, text of review
+
+Explanation of jobs data:
+job name, description, position, experience, professionID, locationID, salary, if paid to advertise, employerID
+
+Explanation of submissions data:
+candidateID, employerID, job name // inside function converts to UID's
+
+Explanation of Candidate Resumes:
+A resume starts with userID, content, and in the end "@#$%^&*" as identifier of ending of each resume
