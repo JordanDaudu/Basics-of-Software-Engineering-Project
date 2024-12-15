@@ -1199,12 +1199,14 @@ void employerViewCandidateSubmission(shared_ptr<User> &currentUser, list<shared_
     {
         cout << "Type the submission UID that you would like to accept / reject: ";
         choice = getValidInt();
+        found = false;
         for(jobSubmissionIndex = jobs_Submission_List.begin(); jobSubmissionIndex != jobs_Submission_List.end(); jobSubmissionIndex++)
         {
-            if((*jobSubmissionIndex)->getUid() == choice)
+            if((*jobSubmissionIndex)->getUid() == choice && (*jobSubmissionIndex)->getEmployerUID() == currentUser->getUid())
             {
                 do
                 {
+                    found = true;
                     cout << "What action would you like to do?\n1.Accept\n2.Reject\n3.Nothing" << endl;
                     choice = getValidInt();
                     if(choice <= 0 || choice >= 4)
@@ -1218,6 +1220,8 @@ void employerViewCandidateSubmission(shared_ptr<User> &currentUser, list<shared_
                     cout << "|Successfully rejected submission!" << endl;
             }
         }
+        if(!found)
+            cout << "Error! given UID isn't a submission." << endl;
     }
     cout << "Returning to menu..." << endl;
 }
