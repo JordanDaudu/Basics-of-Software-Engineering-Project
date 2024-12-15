@@ -2,6 +2,7 @@
 cmake-build-*/
 
 # Ignore CMake-generated files
+cmake-build-debug/
 CMakeCache.txt
 CMakeFiles/
 CMakeScripts/
