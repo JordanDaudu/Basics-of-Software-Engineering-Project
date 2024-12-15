@@ -17,6 +17,7 @@
 #define USERS_DATA "../DataBase/Users Data"
 #define JOBS_DATA "../DataBase/Jobs Data"
 #define SUBMISSIONS_DATA "../DataBase/Submissions Data"
+#define RESUMES_BANK "../Resumes/" // it's the bank of all the resumes that we uploaded in "Resumes" not the saved ones in candidate
 using namespace std;
 namespace fs = filesystem;
 int User::UID = 0, Job_Listing::UID = 0, Job_Submission::UID = 0;
@@ -1082,7 +1083,7 @@ void editProfile(shared_ptr<User> &currentUser)
                 Candidate* candidate = dynamic_cast<Candidate*>((currentUser).get());
                 cout << "Type the filepath: ";
                 cin >> filepath;
-                candidate->changeResume("../Resumes/"+filepath);
+                candidate->changeResume(RESUMES_BANK+filepath);
                 break;
             }
             case 7:
@@ -1123,7 +1124,7 @@ void employerViewCandidateSubmission(shared_ptr<User> &currentUser, list<shared_
             for(candidateIndex = userList.begin(); candidateIndex != userList.end(); candidateIndex++)
                 if((*candidateIndex)->getUid() == (*jobSubmissionIndex)->getCandidateUID())
                 {
-                    cout << "◜──Candidate information───◝" << endl;
+                    cout << "---Candidate information---" << endl;
                     (*candidateIndex)->print();
                     Candidate* candidate = dynamic_cast<Candidate*>((*candidateIndex).get());
                     cout << candidate->getResume();
@@ -1533,7 +1534,7 @@ void candidateMenu(list<shared_ptr<User>> &userList, shared_ptr<User> &currentUs
                 string path;
                 cout << "Type the file name in Resumes:" << endl;
                 cin >> path;
-                currentUser->uploadResume("../Resumes/"+path);
+                currentUser->uploadResume(RESUMES_BANK+path);
                 break;
             }
             case 4:
