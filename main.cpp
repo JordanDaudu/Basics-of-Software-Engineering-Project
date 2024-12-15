@@ -965,16 +965,11 @@ void viewReviews(list<shared_ptr<User>> &userList)
     for(userListIndex = userList.begin(); userListIndex != userList.end(); userListIndex++)
         if((*userListIndex)->getFirstName() == firstName && (*userListIndex)->getLastName() == lastName)
         {
-            if(strcmp((*userListIndex)->getType(), "Employer") != 0)
-            {
-                cout << "Error! user is not an employer, returning to main menu..." << endl;
-                return;
-            }
             Employer *employer = dynamic_cast<Employer *>(userListIndex->get());
             employer->printReviews();
             return;
         }
-    cout << "Error! user given isn't in the system or not an employer, returning to main menu..." << endl;
+    cout << "Error! user given isn't in the system, returning to main menu" << endl;
 }
 /// Function to add a review to a specific employer
 /// \param currentUser = pointer to the current user
@@ -1043,7 +1038,7 @@ void editProfile(shared_ptr<User> &currentUser)
                     number = getValidInt();
                     if(number < 0)
                         cerr << "Error! age cannot be a negative number, try again: ";
-                    else if(number < 18)
+                    else if(number >= 0 && number < 18)
                         cout << "You can't change your age to below 18, try again: " << endl;
                 }
                 while(number < 18);
@@ -1085,7 +1080,7 @@ void editProfile(shared_ptr<User> &currentUser)
             {
                 string filepath;
                 Candidate* candidate = dynamic_cast<Candidate*>((currentUser).get());
-                cout << "Type the new file name in Resumes you want to change your resume to: ";
+                cout << "Type the filepath: ";
                 cin >> filepath;
                 candidate->changeResume("../Resumes/"+filepath);
                 break;
@@ -1281,7 +1276,7 @@ void calculateProfessionAverage(list<shared_ptr<Job_Listing>> &job_list)
     for(jobsIndex = job_list.begin(); jobsIndex != job_list.end(); jobsIndex++)
         if((*jobsIndex)->getProfession() == (*jobsIndex)->getProfessionID(choice) && (*jobsIndex)->getSalary() > 0)
         {
-            sum += float((*jobsIndex)->getSalary());
+            sum += (*jobsIndex)->getSalary();
             size++;
         }
     if(size == 0)
@@ -1754,7 +1749,7 @@ void registerUser(list<shared_ptr<User>> &user)
         age = getValidInt();
         if(age < 0)
             cerr << "Error! age cannot be a negative number, try again: ";
-        else if(age < 18)
+        else if(age >= 0 && age < 18)
         {
             cout << "Minors are not accepted in the system, returning to main menu..." << endl;
             return;
@@ -1869,6 +1864,24 @@ int main()
     list<shared_ptr<Job_Submission>> jobs_Submission_List;
     shared_ptr<Job_Submission> currentJobListing;
     list<shared_ptr<Job_Submission>>::iterator jobSubmissionIndex;
+
+    //adding 3 admin user for testing and deleting a user to see if it works
+
+    /*
+    userList.push_back(make_shared<Candidate> ("admin", "1111", "admin", "user", 0, "Jerusalem region", 542508121));
+    userList.push_back(make_shared<User> ("bdmin", "1111", "bdmin", "user", 0, "Jerusalem region", 054));
+    userList.push_back(make_shared<Employer> ("cdmin", "1111", "cdmin", "user", 0, "Jerusalem region", 054));
+    for(i = userList.begin(); i != userList.end(); i++)
+    {
+        if((*i)->getId() == "bdmin")
+        {
+            currentUser = *i;
+            userList.remove(currentUser);
+            currentUser = nullptr;
+            break;
+        }
+    }
+     */
 
     // Loading data properly from files of previous runs
     loadUsers(userList);
