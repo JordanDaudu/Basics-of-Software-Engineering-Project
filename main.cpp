@@ -88,7 +88,54 @@ void updateUserInFile(const shared_ptr<User>& currentUser) {
     }
     outputFile.close();
 }
+/// Function to update job submission name in files
+/// \param oldJobName = Current job name to be replaced
+/// \param newJobName = New job name
+void updateJobSubmissionsNameInFile(const string& oldJobName, const string& newJobName)
+{
+    ifstream inputFile(SUBMISSIONS_DATA);
 
+    if (!inputFile.is_open()) {
+        cerr << "Error opening jobs file for reading!" << endl;
+        return;
+    }
+
+    vector<string> lines;
+    string line;
+
+    // Process each line in the file
+    while (getline(inputFile, line)) {
+        stringstream ss(line);
+        string candidateId, employerId, jobName;
+
+        // Extract fields from the line
+        getline(ss, candidateId, ',');  // Candidate's id (name/email)
+        getline(ss, employerId, ',');   // Employer's id (name/email)
+        getline(ss, jobName, ',');      // Job name
+
+        // Check if this line matches the job name to be updated
+        if (jobName == oldJobName) {
+            // Update the record with the new job name
+            stringstream updatedLine;
+            updatedLine << candidateId << "," << employerId << "," << newJobName;
+            lines.push_back(updatedLine.str());
+        } else {
+            // Keep the line as is
+            lines.push_back(line);
+        }
+    }
+    inputFile.close();
+    // Write the updated lines back to the file
+    ofstream outputFile(SUBMISSIONS_DATA, ios::trunc);
+    if (!outputFile.is_open()) {
+        cerr << "Error opening submissions file for writing!" << endl;
+        return;
+    }
+    for (const auto& currentLine : lines) {
+        outputFile << currentLine << "\n";
+    }
+    outputFile.close();
+}
 /// Function to update file of job listing in real time
 /// \param job = job offer
 /// \param newName = Have to provide name as this is key to identify when changing to a new one
@@ -839,6 +886,7 @@ void editJobListing(shared_ptr<User> &currentUser, list<shared_ptr<Job_Listing>>
                             cout << "Name cannot be empty. Please enter again: ";
                         }
                         updateJobInFile(*jobsIndex, text);
+                        updateJobSubmissionsNameInFile((*jobsIndex)->getName(), text);
                         (*jobsIndex)->setName(text);
                         cout << "|Successfully changed name, going back to editing menu..." << endl;
                         break;
