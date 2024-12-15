@@ -33,27 +33,27 @@ string Candidate::getResume() const
 bool Candidate::getGotResume() const {return gotResume;}
 void Candidate::printMenu() const
 {
-    string topBorder = "+------------------------------------------------------+";
-    string bottomBorder = "+------------------------------------------------------+";
-    string divider = "|                                                      |";
+    string topBorder = "╔══════════════════════════════════════════════════════╗";
+    string bottomBorder = "╚══════════════════════════════════════════════════════╝";
+    string divider = "║                                                      ║";
 
     cout << topBorder << endl;
-    cout << "|" << string((54 - 8 - firstName.length()) / 2, ' ') << "Welcome " << firstName
-         << string(54 - 8 - firstName.length() - ((54 - 8 - firstName.length()) / 2), ' ') << "|" << endl;
+    cout << "║" << string((54 - 8 - firstName.length()) / 2, ' ') << "Welcome " << firstName
+         << string(54 - 8 - firstName.length() - ((54 - 8 - firstName.length()) / 2), ' ') << "║" << endl;
     cout << divider << endl;
 
-    cout << "|  1. Search for jobs                                  |" << endl;
-    cout << "|  2. Apply for job                                    |" << endl;
-    cout << "|  3. Upload resume                                    |" << endl;
-    cout << "|  4. View Submission history and status               |" << endl;
-    cout << "|  5. View my own profile                              |" << endl;
-    cout << "|  6. Edit profile                                     |" << endl;
-    cout << "|  7. Average salary calculator                        |" << endl;
-    cout << "|  8. Leave review on employer                         |" << endl;
-    cout << "|  9. View reviews on employer                         |" << endl;
-    cout << "| 10. Delete account                                   |" << endl;
-    cout << "| 11. Frequently asked question / Tips                 |" << endl;
-    cout << "| 12. Logout                                           |" << endl;
+    cout << "║  1. Search for jobs                                  ║" << endl;
+    cout << "║  2. Apply for job                                    ║" << endl;
+    cout << "║  3. Upload resume                                    ║" << endl;
+    cout << "║  4. View Submission history and status               ║" << endl;
+    cout << "║  5. View my own profile                              ║" << endl;
+    cout << "║  6. Edit profile                                     ║" << endl;
+    cout << "║  7. Average salary calculator                        ║" << endl;
+    cout << "║  8. Leave review on employer                         ║" << endl;
+    cout << "║  9. View reviews on employer                         ║" << endl;
+    cout << "║ 10. Delete account                                   ║" << endl;
+    cout << "║ 11. Frequently asked question / Tips                 ║" << endl;
+    cout << "║ 12. Logout                                           ║" << endl;
 
     cout << bottomBorder << endl;
 }

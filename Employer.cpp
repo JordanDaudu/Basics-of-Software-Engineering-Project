@@ -64,27 +64,27 @@ void Employer::printReviews()
 }
 void Employer::printMenu() const
 {
-    string topBorder = "+------------------------------------------------------+";
-    string bottomBorder = "+------------------------------------------------------+";
-    string divider = "|                                                      |";
+    string topBorder = "╔══════════════════════════════════════════════════════╗";
+    string bottomBorder = "╚══════════════════════════════════════════════════════╝";
+    string divider = "║                                                      ║";
 
     cout << topBorder << endl;
-    cout << "|" << string((54 - 8 - firstName.length()) / 2, ' ') << "Welcome " << firstName
-         << string(54 - 8 - firstName.length() - ((54 - 8 - firstName.length()) / 2), ' ') << "|" << endl;
+    cout << "║" << string((54 - 8 - firstName.length()) / 2, ' ') << "Welcome " << firstName
+         << string(54 - 8 - firstName.length() - ((54 - 8 - firstName.length()) / 2), ' ') << "║" << endl;
     cout << divider << endl;
 
-    cout << "|  1. Publish job offer                                |" << endl;
-    cout << "|  2. Edit job offer                                   |" << endl;
-    cout << "|  3. Delete job offer                                 |" << endl;
-    cout << "|  4. View published jobs                              |" << endl;
-    cout << "|  5. View my own profile                              |" << endl;
-    cout << "|  6. View candidate profiles to accept / deny         |" << endl;
-    cout << "|  7. Search for jobs                                  |" << endl;
-    cout << "|  8. View reviews posted on me                        |" << endl;
-    cout << "|  9. Pay to advertise                                 |" << endl;
-    cout << "| 10. Delete account                                   |" << endl;
-    cout << "| 11. Frequently asked question / Tips                 |" << endl;
-    cout << "| 12. Logout                                           |" << endl;
+    cout << "║  1. Publish job offer                                ║" << endl;
+    cout << "║  2. Edit job offer                                   ║" << endl;
+    cout << "║  3. Delete job offer                                 ║" << endl;
+    cout << "║  4. View published jobs                              ║" << endl;
+    cout << "║  5. View my own profile                              ║" << endl;
+    cout << "║  6. View candidate profiles to accept / deny         ║" << endl;
+    cout << "║  7. Search for jobs                                  ║" << endl;
+    cout << "║  8. View reviews posted on me                        ║" << endl;
+    cout << "║  9. Pay to advertise                                 ║" << endl;
+    cout << "║ 10. Delete account                                   ║" << endl;
+    cout << "║ 11. Frequently asked question / Tips                 ║" << endl;
+    cout << "║ 12. Logout                                           ║" << endl;
 
     cout << bottomBorder << endl;
 }
