@@ -148,7 +148,6 @@ void Candidate::loadResume()
     }
 
     string line;
-    bool foundResume = false;
     stringstream resumeContentStream;
 
     while (getline(databaseFile, line)) {
@@ -175,7 +174,6 @@ void Candidate::loadResume()
 
             this->resume = resumeContentStream.str();  // Set resume content in the class
             this->gotResume = true;  // Mark that the resume is loaded
-            foundResume = true;
             break;
         }
     }

@@ -14,6 +14,7 @@ Job_Listing::Job_Listing()
     salary = 0;
     paid = false;
     uid = ++UID;
+    employerUID = 0;
 }
 
 Job_Listing::Job_Listing(string name, string description, string position, int exp, string profession, string loc, int salary)
@@ -27,6 +28,7 @@ Job_Listing::Job_Listing(string name, string description, string position, int e
     this->salary = salary;
     employerUID = 0;
     uid = ++UID;
+    paid = false;
 }
 
 Job_Listing::Job_Listing(string name, string text, int position, int experience, int profession, int location, int newSalary,
@@ -71,6 +73,7 @@ string Job_Listing::getPositionID(int choice) const
         return "Full-time";
     else if(choice == 2)
         return "Half-time";
+    return "";
 }
 int Job_Listing::getPositionID() const
 {
