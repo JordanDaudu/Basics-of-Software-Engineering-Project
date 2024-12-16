@@ -624,124 +624,139 @@ void load_users(list<shared_ptr<User>>& user_list)
     }
 }
 // Files functions END -------------------------------------------------------------------------------------------------
-
-void delete_candidate(list<shared_ptr<User>> &user_list, shared_ptr<User> &current_user, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
-{
-    string name = current_user->getFirstName();
-    list<shared_ptr<User>>::iterator user_list_index;
-    list<shared_ptr<Job_Submission>>::iterator jobs_submission_index;
-    for(jobs_submission_index = jobs_Submission_List.begin(); jobs_submission_index != jobs_Submission_List.end(); jobs_submission_index++)
-        if((*jobs_submission_index)->getCandidateUID() == current_user->getUid())
-        {
-            jobs_submission_index = jobs_Submission_List.erase(jobs_submission_index);
-            jobs_submission_index--; // erasing is making index++ so we go one down again
-        }
-    // deleting properly from files
-    delete_user_from_file(USERS_DATA, current_user->getId());
-    delete_job_submissions_by_candidate_ID(current_user->getId());
-    Candidate::deleteResume(current_user->getId());
-    // deleting candidate from list of users
-    for(user_list_index = user_list.begin(); user_list_index != user_list.end(); user_list_index++)
-    {
-        if((*user_list_index)->getUid() == current_user->getUid())
-        {
-            user_list.erase(user_list_index);
-            break;
-        }
-    }
-    cout << "Successfully removed " << name << " from system, all job submissions related to user have been erased as well." << endl;
-    cout << "Thank you for using our system." << endl;
-}
-/// Function that deletes completely all related information to employer
-/// \param user_list = user list of all users in the system
-/// \param current_user = pointer to the current user
-/// \param job_list = list of all job listing in the system
-/// \param jobs_Submission_List = list of all submissions to listings in the system
-void delete_employer(list<shared_ptr<User>> &user_list, shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
-{
-    string name = current_user->getFirstName();
-    list<shared_ptr<User>>::iterator user_list_index;
-    list<shared_ptr<Job_Listing>>::iterator jobs_index;
-    list<shared_ptr<Job_Submission>>::iterator jobs_submission_index;
-    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
-    {
-        if((*jobs_index)->getEmployerUID() == current_user->getUid())
-        {
-            for(jobs_submission_index = jobs_Submission_List.begin(); jobs_submission_index != jobs_Submission_List.end(); jobs_submission_index++) // deleting submission that are connected to this listing
-                if((*jobs_submission_index)->getJob_listingUID() == (*jobs_index)->getUid())
-                {
-                    jobs_submission_index = jobs_Submission_List.erase(jobs_submission_index);
-                    jobs_submission_index--; // erasing is making index++ so we go one down again
-                }
-            jobs_index = job_list.erase(jobs_index);
-            jobs_index--; // erasing is making index++ so we go one down again
-        }
-    }
-    // deleting properly from files
-    delete_user_from_file(USERS_DATA, current_user->getId());
-    delete_job_by_employer_ID(current_user->getId());  // Delete jobs associated with the employer in the "Jobs Data" file
-    delete_job_submissions_by_employer_ID(current_user->getId());
-    // deleting employer from list of users
-    for(user_list_index = user_list.begin(); user_list_index != user_list.end(); user_list_index++)
-    {
-        if((*user_list_index)->getUid() == current_user->getUid())
-        {
-            user_list.erase(user_list_index);
-            break;
-        }
-    }
-
-    cout << "Successfully removed " << name << " from system, all job listing and submissions related have been erased as well." << endl;
-    cout << "Thank you for using our system." << endl;
-}
-/// Function that deletes a job listing of a employer with UID, it also deletes any submission to this listing
-/// \param current_user = pointer to the current user
-/// \param job_list = list of all job listing in the system
-/// \param jobs_Submission_List = list of all job submissions in the system
-void delete_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
+void candidate_apply_for_job(shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
 {
     int uid;
-    string name;
     bool found = false;
-    Employer *employer = dynamic_cast<Employer *>(current_user.get());
-    list<shared_ptr<Job_Listing>>& my_job_listings = employer->getMyJobListings(); // getting a reference to the inside list of jobs that employer has
     list<shared_ptr<Job_Listing>>::iterator jobs_index;
-    list<shared_ptr<Job_Submission>>::iterator jobs_submission_index;
-    shared_ptr<Job_Listing> currentJobListing;
-    shared_ptr<Job_Submission> currentJobSubmission;
-    cout << "Which job listing you would like to delete? type it's UID: ";
-    uid = getValidInt();
-    for(jobs_index = my_job_listings.begin(); jobs_index != my_job_listings.end(); jobs_index++) // deleting from employer own list
-        if((*jobs_index)->getUid() == uid)
+    shared_ptr<Job_Listing> current_job;
+    cout << "Type the UID of the job you would like to apply to: ";
+    cin >> uid;
+    // finding if the given job uid exist in the database
+    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
+        if(uid == (*jobs_index)->getUid())
         {
+            current_job = *jobs_index;
             found = true;
-            name = (*jobs_index)->getName();
-            jobs_index = my_job_listings.erase(jobs_index);
-            break;
         }
     if(!found)
     {
-        cout << "Error! given UID isn't a listing, returning to main menu..." << endl;
+        cout << "Error! given UID does not exist in the system, redirecting to menu." << endl;
         return;
     }
-    for(jobs_submission_index = jobs_Submission_List.begin(); jobs_submission_index != jobs_Submission_List.end(); jobs_submission_index++) // deleting submission that are connected to this listing
-        if((*jobs_submission_index)->getJob_listingUID() == uid)
-        {
-            jobs_submission_index = jobs_Submission_List.erase(jobs_submission_index);
-            jobs_submission_index--; // erasing is making index++ so we go one down again
-        }
-    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++) // deleting from system list
-        if((*jobs_index)->getUid() == uid)
-        {
-            jobs_index = job_list.erase(jobs_index);
-            jobs_index--; // erasing is making index++ so we go one down again
-        }
+    jobs_Submission_List.push_back(make_shared<Job_Submission>(current_user->getUid(), current_job->getEmployerUID(), current_job->getUid()));
 
-    // deleting properly from files
-    delete_job_by_employer_ID(current_user->getId());  // Delete jobs associated with the employer in the "Jobs Data" file
-    delete_job_submissions_by_employer_ID(current_user->getId());
-    cout << "|Successfully removed job listing \"" << name << "\"!" << endl;
+    weak_ptr<User> current_employer = current_job->getEmployer();
+    // Lock the weak_ptr to get a shared_ptr
+    shared_ptr<User> employer = current_employer.lock();
+    // Create and write to the file
+    ofstream file(SUBMISSIONS_DATA, ios::app);
+    if (file.is_open())
+    {
+        // Save the submissions data (user ID, job UID, employer UID)
+        file << current_user->getId() << ","  // Candidate's user ID
+             << employer->getId() << ","  // Employer's user ID
+             << current_job->getName() << ","  // Job name
+             << "\n";
+
+        file.close();
+    }
+    else
+        cerr << "Error opening file for writing!" << endl;
+
+    cout << "|Successfully applied to job listing \"" << current_job->getName() << "\"" << endl;
 }
+void search_job(shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
+{
+    int position, experience, profession, location, choice = 0;
+    bool found = false;
+    list<shared_ptr<Job_Listing>>::iterator jobs_index;
+    do
+    {
+        if(strcmp(current_user->getType(), "Candidate") == 0)
+            cout << "What position would you like search for?:\n1.Full-time\n2.Half-time\n";
+        else if(strcmp(current_user->getType(), "Employer") == 0)
+            cout << "What position would you like to research jobs offerings?:\n1.Full-time\n2.Half-time\n";
+        position = getValidInt();
+        if(position != 1 && position != 2)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(position != 1 && position != 2);
+    do
+    {
+        if(strcmp(current_user->getType(), "Candidate") == 0)
+            cout << "In which profession are you looking for a job?:\n1.Software engineer\n2.Electrical engineer\n3.Civil engineer\n"
+                    "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.No profession\n";
+        else if(strcmp(current_user->getType(), "Employer") == 0)
+            cout << "In which profession are you looking to search jobs?:\n1.Software engineer\n2.Electrical engineer\n3.Civil engineer\n"
+                    "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.No profession\n";
+        profession = getValidInt();
+        if(profession <= 0 || profession >= 8)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(profession <= 0 || profession >= 8);
+    do
+    {
+        if(profession == 7)
+        {
+            experience = 0;
+            break;
+        }
+        if(strcmp(current_user->getType(), "Candidate") == 0)
+            cout << "How many years of experience do you have?:\n0.No experience\n1.1 year\n2.2 years\n3.3 years\n4.4 years\n5.5+ years\n";
+        else if(strcmp(current_user->getType(), "Employer") == 0)
+            cout << "How many years of experience would you like to search jobs in?:\n0.No experience\n1.1 year\n2.2 years\n3.3 years\n4.4 years\n5.5+ years\n";
+        experience = getValidInt();
+        if(experience < 0 || experience > 5)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(experience < 0 || experience > 5);
+    do
+    {
+        cout << "Which location would you like to search in?:\n1.Jerusalem region\n2.Northern region\n3.Haifa region\n"
+                "4.Central region\n5.Tel-Aviv region\n6.Southern region\n7.Doesn't matter" << endl;
+        location = getValidInt();
+        if(location <= 0 || location >= 8)
+            cout << "Error! input not supported, try again" << endl;
+    }
+    while(location <= 0 || location >= 8);
+    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
+        if((*jobs_index)->getPaid())
+        {
+            found = true;
+            (*jobs_index)->print();
+            cout << "^^^Paid advertisement^^^" << endl;
+        }
+    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
+        if((*jobs_index)->getPosition() == (*jobs_index)->getPositionID(position) && (*jobs_index)->getExperience() <= experience &&
+        ((*jobs_index)->getProfession() == (*jobs_index)->getProfessionID(profession) || (*jobs_index)->getProfession() == "None")  &&
+        ((*jobs_index)->getLocation() == (*jobs_index)->getLocationID(location) || location == 7 || (*jobs_index)->getLocation() == "None") &&
+        !(*jobs_index)->getPaid())
+        {
+            found = true;
+            (*jobs_index)->print();
+        }
+    if(!found)
+    {
+        cout << "No result found!\n" << endl;
+        return;
+    }
+    if(strcmp(current_user->getType(), "Candidate") == 0)
+    {
+        do
+        {
+            cout << "\nWould you like to apply for a job?\n1. Yes\n2. No" << endl;
+            choice = getValidInt();
+            if(choice <= 0 || choice >= 3)
+                cout << "Error! input not supported, try again" << endl;
+        }
+        while(choice <= 0 || choice >= 3);
+    }
+    if(choice == 1)
+        candidate_apply_for_job(current_user, job_list, jobs_Submission_List);
+    cout << endl;
+}
+
 void pay_to_advertise_employer(shared_ptr<User> &current_user)
 {
     int choice, uid;
@@ -1212,48 +1227,6 @@ void candidate_view_submission_history(shared_ptr<User> &current_user, list<shar
 /// \param current_user = pointer to the current user
 /// \param job_list = list of all job listing in the system
 /// \param jobs_Submission_List = list of all job submissions in the system
-void candidate_apply_for_job(shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
-{
-    int uid;
-    bool found = false;
-    list<shared_ptr<Job_Listing>>::iterator jobs_index;
-    shared_ptr<Job_Listing> current_job;
-    cout << "Type the UID of the job you would like to apply to: ";
-    cin >> uid;
-    // finding if the given job uid exist in the database
-    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
-        if(uid == (*jobs_index)->getUid())
-        {
-            current_job = *jobs_index;
-            found = true;
-        }
-    if(!found)
-    {
-        cout << "Error! given UID does not exist in the system, redirecting to menu." << endl;
-        return;
-    }
-    jobs_Submission_List.push_back(make_shared<Job_Submission>(current_user->getUid(), current_job->getEmployerUID(), current_job->getUid()));
-
-    weak_ptr<User> current_employer = current_job->getEmployer();
-    // Lock the weak_ptr to get a shared_ptr
-    shared_ptr<User> employer = current_employer.lock();
-    // Create and write to the file
-    ofstream file(SUBMISSIONS_DATA, ios::app);
-    if (file.is_open())
-    {
-        // Save the submissions data (user ID, job UID, employer UID)
-        file << current_user->getId() << ","  // Candidate's user ID
-             << employer->getId() << ","  // Employer's user ID
-             << current_job->getName() << ","  // Job name
-             << "\n";
-
-        file.close();
-    }
-    else
-        cerr << "Error opening file for writing!" << endl;
-
-    cout << "|Successfully applied to job listing \"" << current_job->getName() << "\"" << endl;
-}
 /// Function that is printing all the jobs under pointed employer
 /// \param current_user = pointer to the current user
 void employer_published_jobs(shared_ptr<User> &current_user)
@@ -1296,96 +1269,6 @@ void calculate_profession_average_salary(list<shared_ptr<Job_Listing>> &job_list
 /// Search function for Candidate
 /// \param current_user = pointer to the current user
 /// \param job_list = list of all job listing in the system
-void search_job(shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
-{
-    int position, experience, profession, location, choice = 0;
-    bool found = false;
-    list<shared_ptr<Job_Listing>>::iterator jobs_index;
-    do
-    {
-        if(strcmp(current_user->getType(), "Candidate") == 0)
-            cout << "What position would you like search for?:\n1.Full-time\n2.Half-time\n";
-        else if(strcmp(current_user->getType(), "Employer") == 0)
-            cout << "What position would you like to research jobs offerings?:\n1.Full-time\n2.Half-time\n";
-        position = getValidInt();
-        if(position != 1 && position != 2)
-            cout << "Error! input not supported, try again" << endl;
-    }
-    while(position != 1 && position != 2);
-    do
-    {
-        if(strcmp(current_user->getType(), "Candidate") == 0)
-            cout << "In which profession are you looking for a job?:\n1.Software engineer\n2.Electrical engineer\n3.Civil engineer\n"
-                    "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.No profession\n";
-        else if(strcmp(current_user->getType(), "Employer") == 0)
-            cout << "In which profession are you looking to search jobs?:\n1.Software engineer\n2.Electrical engineer\n3.Civil engineer\n"
-                    "4.Mechanical engineer\n5.Industrial engineering and management\n6.Chemical engineering\n7.No profession\n";
-        profession = getValidInt();
-        if(profession <= 0 || profession >= 8)
-            cout << "Error! input not supported, try again" << endl;
-    }
-    while(profession <= 0 || profession >= 8);
-    do
-    {
-        if(profession == 7)
-        {
-            experience = 0;
-            break;
-        }
-        if(strcmp(current_user->getType(), "Candidate") == 0)
-            cout << "How many years of experience do you have?:\n0.No experience\n1.1 year\n2.2 years\n3.3 years\n4.4 years\n5.5+ years\n";
-        else if(strcmp(current_user->getType(), "Employer") == 0)
-            cout << "How many years of experience would you like to search jobs in?:\n0.No experience\n1.1 year\n2.2 years\n3.3 years\n4.4 years\n5.5+ years\n";
-        experience = getValidInt();
-        if(experience < 0 || experience > 5)
-            cout << "Error! input not supported, try again" << endl;
-    }
-    while(experience < 0 || experience > 5);
-    do
-    {
-        cout << "Which location would you like to search in?:\n1.Jerusalem region\n2.Northern region\n3.Haifa region\n"
-                "4.Central region\n5.Tel-Aviv region\n6.Southern region\n7.Doesn't matter" << endl;
-        location = getValidInt();
-        if(location <= 0 || location >= 8)
-            cout << "Error! input not supported, try again" << endl;
-    }
-    while(location <= 0 || location >= 8);
-    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
-        if((*jobs_index)->getPaid())
-        {
-            found = true;
-            (*jobs_index)->print();
-            cout << "^^^Paid advertisement^^^" << endl;
-        }
-    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
-        if((*jobs_index)->getPosition() == (*jobs_index)->getPositionID(position) && (*jobs_index)->getExperience() <= experience &&
-        ((*jobs_index)->getProfession() == (*jobs_index)->getProfessionID(profession) || (*jobs_index)->getProfession() == "None")  &&
-        ((*jobs_index)->getLocation() == (*jobs_index)->getLocationID(location) || location == 7 || (*jobs_index)->getLocation() == "None") &&
-        !(*jobs_index)->getPaid())
-        {
-            found = true;
-            (*jobs_index)->print();
-        }
-    if(!found)
-    {
-        cout << "No result found!\n" << endl;
-        return;
-    }
-    if(strcmp(current_user->getType(), "Candidate") == 0)
-    {
-        do
-        {
-            cout << "\nWould you like to apply for a job?\n1. Yes\n2. No" << endl;
-            choice = getValidInt();
-            if(choice <= 0 || choice >= 3)
-                cout << "Error! input not supported, try again" << endl;
-        }
-        while(choice <= 0 || choice >= 3);
-    }
-    if(choice == 1)
-        candidate_apply_for_job(current_user, job_list, jobs_Submission_List);
-    cout << endl;
-}
 
 /// Publish function for employer
 /// \param current_user = pointer to the current user
@@ -1494,6 +1377,123 @@ void publish_job_offer(shared_ptr<User> &current_user, list<shared_ptr<Job_Listi
     cout << "||Successfully added listing!||" << endl;
 }
 
+void delete_candidate(list<shared_ptr<User>> &user_list, shared_ptr<User> &current_user, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
+{
+    string name = current_user->getFirstName();
+    list<shared_ptr<User>>::iterator user_list_index;
+    list<shared_ptr<Job_Submission>>::iterator jobs_submission_index;
+    for(jobs_submission_index = jobs_Submission_List.begin(); jobs_submission_index != jobs_Submission_List.end(); jobs_submission_index++)
+        if((*jobs_submission_index)->getCandidateUID() == current_user->getUid())
+        {
+            jobs_submission_index = jobs_Submission_List.erase(jobs_submission_index);
+            jobs_submission_index--; // erasing is making index++ so we go one down again
+        }
+    // deleting properly from files
+    delete_user_from_file(USERS_DATA, current_user->getId());
+    delete_job_submissions_by_candidate_ID(current_user->getId());
+    Candidate::deleteResume(current_user->getId());
+    // deleting candidate from list of users
+    for(user_list_index = user_list.begin(); user_list_index != user_list.end(); user_list_index++)
+    {
+        if((*user_list_index)->getUid() == current_user->getUid())
+        {
+            user_list.erase(user_list_index);
+            break;
+        }
+    }
+    cout << "Successfully removed " << name << " from system, all job submissions related to user have been erased as well." << endl;
+    cout << "Thank you for using our system." << endl;
+}
+/// Function that deletes completely all related information to employer
+/// \param user_list = user list of all users in the system
+/// \param current_user = pointer to the current user
+/// \param job_list = list of all job listing in the system
+/// \param jobs_Submission_List = list of all submissions to listings in the system
+void delete_employer(list<shared_ptr<User>> &user_list, shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
+{
+    string name = current_user->getFirstName();
+    list<shared_ptr<User>>::iterator user_list_index;
+    list<shared_ptr<Job_Listing>>::iterator jobs_index;
+    list<shared_ptr<Job_Submission>>::iterator jobs_submission_index;
+    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
+    {
+        if((*jobs_index)->getEmployerUID() == current_user->getUid())
+        {
+            for(jobs_submission_index = jobs_Submission_List.begin(); jobs_submission_index != jobs_Submission_List.end(); jobs_submission_index++) // deleting submission that are connected to this listing
+                if((*jobs_submission_index)->getJob_listingUID() == (*jobs_index)->getUid())
+                {
+                    jobs_submission_index = jobs_Submission_List.erase(jobs_submission_index);
+                    jobs_submission_index--; // erasing is making index++ so we go one down again
+                }
+            jobs_index = job_list.erase(jobs_index);
+            jobs_index--; // erasing is making index++ so we go one down again
+        }
+    }
+    // deleting properly from files
+    delete_user_from_file(USERS_DATA, current_user->getId());
+    delete_job_by_employer_ID(current_user->getId());  // Delete jobs associated with the employer in the "Jobs Data" file
+    delete_job_submissions_by_employer_ID(current_user->getId());
+    // deleting employer from list of users
+    for(user_list_index = user_list.begin(); user_list_index != user_list.end(); user_list_index++)
+    {
+        if((*user_list_index)->getUid() == current_user->getUid())
+        {
+            user_list.erase(user_list_index);
+            break;
+        }
+    }
+
+    cout << "Successfully removed " << name << " from system, all job listing and submissions related have been erased as well." << endl;
+    cout << "Thank you for using our system." << endl;
+}
+void delete_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
+{
+    int uid;
+    string name;
+    bool found = false;
+    Employer *employer = dynamic_cast<Employer *>(current_user.get());
+    list<shared_ptr<Job_Listing>>& my_job_listings = employer->getMyJobListings(); // getting a reference to the inside list of jobs that employer has
+    list<shared_ptr<Job_Listing>>::iterator jobs_index;
+    list<shared_ptr<Job_Submission>>::iterator jobs_submission_index;
+    shared_ptr<Job_Listing> currentJobListing;
+    shared_ptr<Job_Submission> currentJobSubmission;
+    cout << "Which job listing you would like to delete? type it's UID: ";
+    uid = getValidInt();
+    for(jobs_index = my_job_listings.begin(); jobs_index != my_job_listings.end(); jobs_index++) // deleting from employer own list
+        if((*jobs_index)->getUid() == uid)
+        {
+            found = true;
+            name = (*jobs_index)->getName();
+            jobs_index = my_job_listings.erase(jobs_index);
+            break;
+        }
+    if(!found)
+    {
+        cout << "Error! given UID isn't a listing, returning to main menu..." << endl;
+        return;
+    }
+    for(jobs_submission_index = jobs_Submission_List.begin(); jobs_submission_index != jobs_Submission_List.end(); jobs_submission_index++) // deleting submission that are connected to this listing
+        if((*jobs_submission_index)->getJob_listingUID() == uid)
+        {
+            jobs_submission_index = jobs_Submission_List.erase(jobs_submission_index);
+            jobs_submission_index--; // erasing is making index++ so we go one down again
+        }
+    for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++) // deleting from system list
+        if((*jobs_index)->getUid() == uid)
+        {
+            jobs_index = job_list.erase(jobs_index);
+            jobs_index--; // erasing is making index++ so we go one down again
+        }
+
+    // deleting properly from files
+    delete_job_by_employer_ID(current_user->getId());  // Delete jobs associated with the employer in the "Jobs Data" file
+    delete_job_submissions_by_employer_ID(current_user->getId());
+    cout << "|Successfully removed job listing \"" << name << "\"!" << endl;
+}
+/// Function that deletes a job listing of a employer with UID, it also deletes any submission to this listing
+/// \param current_user = pointer to the current user
+/// \param job_list = list of all job listing in the system
+/// \param jobs_Submission_List = list of all job submissions in the system
 /// Function of the menu that the candidate uses
 /// \param user_list = user list of all users in the system
 /// \param current_user = pointer to the current user
