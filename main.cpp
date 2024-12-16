@@ -820,7 +820,7 @@ void edit_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_Listin
     cout << "Type the job UID that you would like to edit: ";
     uid = getValidInt();
     for(jobs_index = my_job_listings.begin(); jobs_index != my_job_listings.end(); jobs_index++)
-        if((*jobs_index)->getUid() == uid)
+        if((*jobs_index)->getUid() == uid && (*jobs_index)->getEmployerUID() == current_user->getUid())
         {
             do
             {
