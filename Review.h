@@ -5,6 +5,7 @@
 #ifndef BASICS_OF_SOFTWARE_ENGINEERING_PROJECT_REVIEW_H
 #define BASICS_OF_SOFTWARE_ENGINEERING_PROJECT_REVIEW_H
 #include <iostream>
+#include "utils.h"
 using namespace std;
 
 class Review

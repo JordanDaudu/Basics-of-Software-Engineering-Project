@@ -7,6 +7,7 @@
 #include <iostream>
 #include <memory>
 #include "User.h"
+#include "utils.h"
 using namespace std;
 
 class Job_Listing

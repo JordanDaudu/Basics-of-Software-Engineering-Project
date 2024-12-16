@@ -9,6 +9,7 @@
 #include "Review.h"
 #include <list>
 #include <memory> // library to manage dynamic memories
+#include "utils.h"
 
 class Employer: public User
         {

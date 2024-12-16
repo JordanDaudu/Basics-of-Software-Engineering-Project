@@ -9,6 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "utils.h"
 using namespace std;
 
 class Candidate: virtual public User
