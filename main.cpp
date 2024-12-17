@@ -335,7 +335,93 @@ void delete_job_submissions_by_employer_ID(const string& employerID) {
 
     cout << "Job submissions associated with employer ID " << employerID << " have been deleted." << endl;
 }
+/// Function to delete job submission by job name from file
+/// \param jobNameToDelete = job name to delete from file
+void delete_job_submissions_by_job_name(const string& jobNameToDelete) {
+    ifstream inputFile(SUBMISSIONS_DATA);
 
+    if (!inputFile.is_open()) {
+        cerr << "Error opening submission file for reading!" << endl;
+        return;
+    }
+
+    vector<string> lines;
+    string line;
+
+    // Read all lines from the file
+    while (getline(inputFile, line)) {
+        stringstream ss(line);
+        string candidateId, employerId, jobName;
+
+        // Assuming the order in the file is: candidateId (ID), employerId (ID), jobName
+        getline(ss, candidateId, ',');  // Candidate's ID (string)
+        getline(ss, employerId, ',');   // Employer's ID (string)
+        getline(ss, jobName, ',');      // Job name (string)
+
+        // If the job name doesn't match the one we want to delete, keep the line
+        if (jobName != jobNameToDelete) {
+            lines.push_back(line);
+        }
+    }
+
+    inputFile.close();
+
+    // Write the updated lines back to the file
+    ofstream outputFile(SUBMISSIONS_DATA, ios::trunc);
+    if (!outputFile.is_open()) {
+        cerr << "Error opening submission file for writing!" << endl;
+        return;
+    }
+
+    for (const auto& currentLine : lines) {
+        outputFile << currentLine << "\n";
+    }
+    outputFile.close();
+
+    cout << "Job submissions associated with job name \"" << jobNameToDelete << "\" have been deleted." << endl;
+}
+/// Function to delete job listing with job name from file
+/// \param job_name = job name listing to delete
+void delete_job_by_job_name(const string& job_name) {
+    ifstream inputFile(JOBS_DATA);
+    if (!inputFile.is_open()) {
+        cerr << "Error opening jobs file for reading!" << endl;
+        return;
+    }
+
+    vector<string> lines;
+    string line;
+
+    // Read all lines from the file
+    while (getline(inputFile, line)) {
+        stringstream ss(line);
+        string currentJobName;
+        string originalLine = line;  // Save the entire line to preserve its content
+
+        // job name is the first field in the job data
+        getline(ss, currentJobName, ',');  // Extract the job name
+
+        // If the job name doesn't match the one we want to delete, keep the original line
+        if (currentJobName != job_name) {
+            lines.push_back(originalLine);
+        }
+    }
+    inputFile.close();
+
+    // Write the updated lines back to the file
+    ofstream outputFile(JOBS_DATA, ios::trunc);
+    if (!outputFile.is_open()) {
+        cerr << "Error opening jobs file for writing!" << endl;
+        return;
+    }
+
+    for (const auto& currentLine : lines) {
+        outputFile << currentLine << "\n";
+    }
+    outputFile.close();
+
+    cout << "Job listings with job name \"" << job_name << "\" have been deleted." << endl;
+}
 /// Function to delete job listing from file using employer ID
 /// \param employerId
 void delete_job_by_employer_ID(const string& employerId) {
@@ -1449,7 +1535,7 @@ void delete_employer(list<shared_ptr<User>> &user_list, shared_ptr<User> &curren
 void delete_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
 {
     int uid;
-    string name;
+    string name_of_job;
     bool found = false;
     Employer *employer = dynamic_cast<Employer *>(current_user.get());
     list<shared_ptr<Job_Listing>>& my_job_listings = employer->getMyJobListings(); // getting a reference to the inside list of jobs that employer has
@@ -1467,7 +1553,7 @@ void delete_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_List
         if((*jobs_index)->getUid() == uid)
         {
             found = true;
-            name = (*jobs_index)->getName();
+            name_of_job = (*jobs_index)->getName();
             jobs_index = my_job_listings.erase(jobs_index);
             break;
         }
@@ -1479,20 +1565,22 @@ void delete_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_List
     for(jobs_submission_index = jobs_Submission_List.begin(); jobs_submission_index != jobs_Submission_List.end(); jobs_submission_index++) // deleting submission that are connected to this listing
         if((*jobs_submission_index)->getJob_listingUID() == uid)
         {
+            // deleting from job_submission list the all submissions related to this listing
             jobs_submission_index = jobs_Submission_List.erase(jobs_submission_index);
             jobs_submission_index--; // erasing is making index++ so we go one down again
         }
     for(jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++) // deleting from system list
         if((*jobs_index)->getUid() == uid)
         {
+            //deleting from database of job_list the job
             jobs_index = job_list.erase(jobs_index);
             jobs_index--; // erasing is making index++ so we go one down again
         }
-
     // deleting properly from files
-    delete_job_by_employer_ID(current_user->getId());  // Delete jobs associated with the employer in the "Jobs Data" file
-    delete_job_submissions_by_employer_ID(current_user->getId());
-    cout << "|Successfully removed job listing \"" << name << "\"!" << endl;
+    delete_job_by_job_name(name_of_job);
+    delete_job_submissions_by_job_name(name_of_job);
+
+    cout << "|Successfully removed job listing \"" << name_of_job << "\"!" << endl;
 }
 /// Function that deletes a job listing of a employer with UID, it also deletes any submission to this listing
 /// \param current_user = pointer to the current user
