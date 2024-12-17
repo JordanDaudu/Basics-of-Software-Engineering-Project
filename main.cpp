@@ -1457,6 +1457,10 @@ void delete_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_List
     list<shared_ptr<Job_Submission>>::iterator jobs_submission_index;
     shared_ptr<Job_Listing> currentJobListing;
     shared_ptr<Job_Submission> currentJobSubmission;
+    cout << "here are all the data of the jobs you published: " << endl;
+    for (jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
+        if ((*jobs_index)->getEmployerUID() == current_user->getUid())
+            ((*jobs_index)->print());
     cout << "Which job listing you would like to delete? type it's UID: ";
     uid = getValidInt();
     for(jobs_index = my_job_listings.begin(); jobs_index != my_job_listings.end(); jobs_index++) // deleting from employer own list
