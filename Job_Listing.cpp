@@ -48,7 +48,7 @@ Job_Listing::Job_Listing(string name, string text, int position, int experience,
 }
 Job_Listing::~Job_Listing()
 {
-    cout << "Job_Listing::destructor" << endl;
+    //cout << "Job_Listing::destructor" << endl;
 }
 
 char *Job_Listing::getType() const

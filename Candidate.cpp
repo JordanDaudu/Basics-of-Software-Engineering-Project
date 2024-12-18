@@ -15,7 +15,10 @@ Candidate::Candidate(string id, string password, string firstName, string lastNa
 Candidate::Candidate(string id, string password, string firstName, string lastName, int age,
                      int loc, int phoneNum): User(id, password, firstName, lastName, age, loc, phoneNum)
 {gotResume = false; loadResume();}
-Candidate::~Candidate() {cout << "Candidate::destructor" << endl;}
+Candidate::~Candidate()
+{
+    //cout << "Candidate::destructor" << endl;
+}
 char *Candidate::getType() const
 {
     return "Candidate";

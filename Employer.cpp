@@ -8,12 +8,15 @@
 Employer::Employer(): User()
 {}
 Employer::Employer(string id, string password, string firstName, string lastName, int age, string loc,
-                     int phoneNum): User(id, password, firstName, lastName, age, loc, phoneNum)
+                   int phoneNum): User(id, password, firstName, lastName, age, loc, phoneNum)
 {}
 Employer::Employer(string id, string password, string firstName, string lastName, int age, int loc,
                    int phoneNum): User(id, password, firstName, lastName, age, loc, phoneNum)
 {}
-Employer::~Employer() {cout << "Employer::destructor" << endl;}
+Employer::~Employer()
+{
+    //cout << "Employer::destructor" << endl;
+}
 
 char *Employer::getType() const
 {

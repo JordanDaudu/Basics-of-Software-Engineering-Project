@@ -20,7 +20,10 @@ Job_Submission::Job_Submission(int candidateUID, int employerUID, int job_listin
     status = 0;
     uid = ++UID;
 }
-Job_Submission::~Job_Submission() {cout << "Job_Submission::destructor" << endl;}
+Job_Submission::~Job_Submission()
+{
+    //cout << "Job_Submission::destructor" << endl;
+}
 
 int Job_Submission::getCandidateUID() const {return candidateUID;}
 int Job_Submission::getEmployerUID() const {return employerUID;}

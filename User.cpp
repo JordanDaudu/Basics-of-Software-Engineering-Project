@@ -46,7 +46,10 @@ char *User::getType() const
 {
     return "User";
 }
-User::~User() {cout << "user::destructor" << endl;}
+User::~User()
+{
+    //cout << "user::destructor" << endl;
+}
 
 string User::getId() const {return id;}
 string User::getPassword() const {return password;}
