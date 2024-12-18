@@ -69,7 +69,7 @@ In real time data is stored in 3 lists: user_list, job_list, jobs_Submission_Lis
 <img align="middle" alt="IMAGE" src="Photos/Basics of software engineering project Data Flow Diagram level 2.png" width="1080" height="1080" />
 
 <h2 align="left"> Use Case Diagram Candidate </h2>
-<img align="middle" alt="IMAGE" src="Photos/Use case Diagram Candidate.png" width="1080" height="1080" />
+<img align="middle" alt="IMAGE" src="Photos/Use case Diagram Candidate.png" width="1080" height="720" />
 
 <h2 align="left"> Use Case Diagram Employer </h2>
-<img align="middle" alt="IMAGE" src="Photos/Use case Diagram Employer.png" width="1080" height="1080" />
+<img align="middle" alt="IMAGE" src="Photos/Use case Diagram Employer.png" width="1080" height="720" />
