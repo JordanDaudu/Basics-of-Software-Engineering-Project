@@ -48,7 +48,7 @@ void Candidate::printMenu() const
     cout << "|  1. Search for jobs                                  |" << endl;
     cout << "|  2. Apply for job                                    |" << endl;
     cout << "|  3. Upload resume                                    |" << endl;
-    cout << "|  4. View Submission history and status               |" << endl;
+    cout << "|  4. View Submission(s) history and status            |" << endl;
     cout << "|  5. View my own profile                              |" << endl;
     cout << "|  6. Edit profile                                     |" << endl;
     cout << "|  7. Average salary calculator                        |" << endl;
@@ -69,8 +69,8 @@ void Candidate::printFAQ() const
         cout << "1. Do I have to upload my resume to use this site?" << endl;
         cout << "2. How do I find the right job for me?" << endl;
         cout << "3. Is there a way to search for a job without any experience?" << endl;
-        cout << "4. How do I apply to a job?" << endl;
-        cout << "5. How can I check the status of my submission?" << endl;
+        cout << "4. How do I apply for a job?" << endl;
+        cout << "5. How can I check the status of my submission(s)?" << endl;
         cout << "6. Exit" << endl;
         do
         {
@@ -99,11 +99,11 @@ void Candidate::printFAQ() const
                 break;
             }
             case 5: {
-                cout << "In the main menu you have an option \"View submission history and status\" click it and you will have information on all your history of submissions." << endl;
+                cout << "In the main menu you have an option \"View submission(s) history and status\" click it and you will have information on all your history of submissions." << endl;
                 break;
             }
             default:
-                cout << "Hope u got the information u want, redirecting to main menu..." << endl;
+                cout << "Hope you got the information you want, redirecting to main menu..." << endl;
         }
     }
     while (choice != 6);

@@ -760,7 +760,7 @@ void search_job(shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &j
     do
     {
         if(strcmp(current_user->getType(), "Candidate") == 0)
-            cout << "What position would you like search for?:\n1.Full-time\n2.Half-time\n";
+            cout << "What position would you like to search for?:\n1.Full-time\n2.Half-time\n";
         else if(strcmp(current_user->getType(), "Employer") == 0)
             cout << "What position would you like to research jobs offerings?:\n1.Full-time\n2.Half-time\n";
         position = getValidInt();
@@ -898,6 +898,11 @@ void edit_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_Listin
     list<shared_ptr<Job_Listing>> my_job_listings;
     list<shared_ptr<Job_Listing>>::iterator jobs_index;
     my_job_listings = employer->getMyJobListings();
+    if(employer->isMyJobListingsEmpty())
+    {
+        cout << "You have no job listing, returning to main menu..." << endl;
+        return;
+    }
     cout << "your published jobs: " << endl;
     for (jobs_index = my_job_listings.begin(); jobs_index != my_job_listings.end(); jobs_index++) {
         if ((*jobs_index)->getEmployerUID() == current_user->getUid())
@@ -1543,7 +1548,12 @@ void delete_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_List
     list<shared_ptr<Job_Submission>>::iterator jobs_submission_index;
     shared_ptr<Job_Listing> currentJobListing;
     shared_ptr<Job_Submission> currentJobSubmission;
-    cout << "here are all the data of the jobs you published: " << endl;
+    if(employer->isMyJobListingsEmpty())
+    {
+        cout << "You have no job listing, returning to main menu..." << endl;
+        return;
+    }
+    cout << "Here is all the data of the jobs you published: " << endl;
     for (jobs_index = job_list.begin(); jobs_index != job_list.end(); jobs_index++)
         if ((*jobs_index)->getEmployerUID() == current_user->getUid())
             ((*jobs_index)->print());

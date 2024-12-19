@@ -97,11 +97,11 @@ void Employer::printFAQ() const
     do
     {
         cout << "\nList of common questions:" << endl;
-        cout << "1. Can I use the same account as an employer and a candidate?" << endl;
+        cout << "1. Can I use the same account as an employer and as a candidate?" << endl;
         cout << "2. How much time does it take after uploading a job to accept it to the system?" << endl;
         cout << "3. How many jobs offers can I submit at the same time?" << endl;
-        cout << "4. How do I see the candidates that apply for my jobs?" << endl;
-        cout << "5. Can I edit my submission after uploading it?" << endl;
+        cout << "4. How can I see the candidates that applied for my job(s)?" << endl;
+        cout << "5. Can I edit my job listing after uploading it?" << endl;
         cout << "6. Exit" << endl;
         do
         {
@@ -117,7 +117,7 @@ void Employer::printFAQ() const
                 break;
             }
             case 2: {
-                cout << "Instantly, our system immediately uploads the submission to the jobs list." << endl;
+                cout << "Instantly, our system immediately uploads the job listing to the jobs list of the system." << endl;
                 break;
             }
             case 3: {
@@ -133,7 +133,7 @@ void Employer::printFAQ() const
                 break;
             }
             default:
-                cout << "Hope u got the information u want, redirecting to main menu..." << endl;
+                cout << "Hope you got the information you want, redirecting to main menu..." << endl;
         }
     }
     while (choice != 6);
