@@ -43,7 +43,7 @@ Input user type, id, password, first name, last name, age, location, phone numbe
 3.	delete job offer ✅<br />
 4.	View published jobs ✅<br />
 5.  View my own profile ✅<br />
-6.	View candidate profiles to accept / deny ✅<br />
+6.	View candidate(s) profile to accept / reject ✅<br />
 7.	Search for jobs ✅<br />
 8.  View reviews posted on me ✅<br />
 9.	Pay to advertise ✅<br />

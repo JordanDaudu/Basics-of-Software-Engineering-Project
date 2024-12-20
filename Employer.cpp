@@ -81,7 +81,7 @@ void Employer::printMenu() const
     cout << "|  3. Delete job offer                                 |" << endl;
     cout << "|  4. View published jobs                              |" << endl;
     cout << "|  5. View my own profile                              |" << endl;
-    cout << "|  6. View candidate profiles to accept / deny         |" << endl;
+    cout << "|  6. View candidate(s) profile to accept / reject     |" << endl;
     cout << "|  7. Search for jobs                                  |" << endl;
     cout << "|  8. View reviews posted on me                        |" << endl;
     cout << "|  9. Pay to advertise                                 |" << endl;

@@ -903,7 +903,7 @@ void edit_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_Listin
         cout << "You have no job listing, returning to main menu..." << endl;
         return;
     }
-    cout << "your published jobs: " << endl;
+    cout << "Your published jobs: " << endl;
     for (jobs_index = my_job_listings.begin(); jobs_index != my_job_listings.end(); jobs_index++) {
         if ((*jobs_index)->getEmployerUID() == current_user->getUid())
             (*jobs_index)->print();
@@ -955,7 +955,7 @@ void edit_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_Listin
                             getline(cin, text);
                             if(!text.empty())
                                 break;
-                            cout << "description cannot be empty. Please enter again: ";
+                            cout << "Description cannot be empty. Please enter again: ";
                         }
                         (*jobs_index)->setDescription(text);
                         cout << "|Successfully changed description, going back to editing menu..." << endl;
@@ -1283,7 +1283,7 @@ void employer_view_candidate_submission(shared_ptr<User> &current_user, list<sha
         if(!found)
             cout << "Error! given UID isn't a submission." << endl;
     }
-    cout << "Returning to menu..." << endl;
+    cout << "Returning to main menu..." << endl;
 }
 /// function for candidate to view his submission history and check it's current status
 /// \param current_user = pointer to the current user
@@ -1394,7 +1394,7 @@ void publish_job_offer(shared_ptr<User> &current_user, list<shared_ptr<Job_Listi
         getline(cin, text);
         if(!text.empty())
             break;
-        cout << "description cannot be empty. Please enter again: ";
+        cout << "Description cannot be empty. Please enter again: ";
     }
     do
     {
@@ -1438,7 +1438,7 @@ void publish_job_offer(shared_ptr<User> &current_user, list<shared_ptr<Job_Listi
     while(location <= 0 || location >= 8);
     do
     {
-        cout << "What is the salary of the job?\nNote: If you would like to not specify the amount input 0: ";
+        cout << "What would the salary for this job be?\nNote: If you prefer not to specify an amount, input 0: ";
         salary = getValidInt();
         if(salary < 0)
             cout << "Error! input not supported, salary can't be negative try again" << endl;
@@ -1492,7 +1492,7 @@ void delete_candidate(list<shared_ptr<User>> &user_list, shared_ptr<User> &curre
             break;
         }
     }
-    cout << "Successfully removed " << name << " from system, all job submissions related to user have been erased as well." << endl;
+    cout << "Successfully removed " << name << " from system, all job(s) submissions related to user have been erased as well." << endl;
     cout << "Thank you for using our system." << endl;
 }
 /// Function that deletes completely all related information to employer
@@ -1534,7 +1534,7 @@ void delete_employer(list<shared_ptr<User>> &user_list, shared_ptr<User> &curren
         }
     }
 
-    cout << "Successfully removed " << name << " from system, all job listing and submissions related have been erased as well." << endl;
+    cout << "Successfully removed " << name << " from system, all job(s) listing and submission(s) related have been erased as well." << endl;
     cout << "Thank you for using our system." << endl;
 }
 void delete_job_listing(shared_ptr<User> &current_user, list<shared_ptr<Job_Listing>> &job_list, list<shared_ptr<Job_Submission>> &jobs_Submission_List)
