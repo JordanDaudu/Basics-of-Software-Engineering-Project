@@ -2,7 +2,7 @@
 
 <h3 align="center">Basic git commands:<h3>
 
-  <img align="right" alt="IMAGE" src="Photos/Git Commands.jpeg" width="300" height="210" />
+  <img align="right" alt="IMAGE" src="Photos/Git Commands.jpeg" width="300" height="210"/>
 
 - `git init` - create dir and open new "project"  
 - `git add` - מכין קבצים שארצה להכניס לבראנץ  
@@ -68,7 +68,7 @@ Note: Files are not where data is stored in real time, only for loading when fir
 In real time data is stored in 3 lists: <code>user_list, job_list, jobs_Submission_List</code>.<br />
 
 <h2 align="left"> Data Flow Diagram </h2>
-<img align="middle" alt="IMAGE" src="Photos/Basics of software engineering project Data Flow Diagram level 2.png" width="1080" height="1080" />
+<img align="middle" alt="IMAGE" src="Photos/Basics of software engineering project Data Flow Diagram level 2.png"/>
 
 <h2 align="left"> Use Case Diagram Candidate </h2>
 <img align="middle" alt="IMAGE" src="Photos/Use case Diagram Candidate.png"/>
