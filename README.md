@@ -2,13 +2,14 @@
 
 <h3 align="center">Basic git commands:<h3>
 
-  <img align="right" alt="IMAGE" src="Photos/Git Commands.jpeg" width="300" height="150" />
-git init - create dir and open new "project"<br />
-git add - מכין קבצים שארצה להכניס לבראנץ<br />
-git commit -m "" - שומר את הקבצים שהכנתי בבראנץ<br />
-git branch branch_name - מייצר ענף חדש בפרוייקט בשם שאבחר<br />
-git branch - יציג את הענפים שקיימים כרגע בפרוייקט<br />
-git checkout branch_name - יעביר אותנו לבראנץ | ענף אחר<br />
+  <img align="right" alt="IMAGE" src="Photos/Git Commands.jpeg" width="300" height="210" />
+
+- `git init` - create dir and open new "project"  
+- `git add` - מכין קבצים שארצה להכניס לבראנץ  
+- `git commit -m ""` - שומר את הקבצים שהכנתי בבראנץ  
+- `git branch branch_name` - מייצר ענף חדש בפרוייקט בשם שאבחר  
+- `git branch` - יציג את הענפים שקיימים כרגע בפרוייקט  
+- `git checkout branch_name` - יעביר אותנו לבראנץ | ענף אחר
 
 
 <h3 align="center">Progress indicator<h3>
@@ -52,24 +53,25 @@ Input user type, id, password, first name, last name, age, location, phone numbe
 12.	Logout ✅<br />
 
 <h2 align="left"> How to add resume files properly? </h2>
-There is a folder named "Resumes", the code will immediately read from there the user should input the filename that is located there to read.
-For example inside folder "Resumes" there is a file named "resume1" whenever asked for a filepath the user should input "resume1".<br />
+There is a folder named <code>"Resumes"</code>, the code will immediately read from there the user should input the filename that is located there to read.
+For example inside folder <code>"Resumes"</code> there is a file named <code>"resume1"</code> you could input it to "upload" this resume as a candidate.<br />
+To add more resume files you only need to add them to <code>"Resumes"</code> folder properly and the code would be able to read them.<br />
 
 <h2 align="left"> How is data stored inside files? </h2>
-There is inside "Database" folder a file named "DataBase Explanation" that it's written there how each file information is seperated.<br />
+There is inside <code>"Database"</code> folder a file named <code>"DataBase Explanation"</code> that it's written there how each file information is seperated.<br />
 There is 4 data files in total:<br />
-1. Users data - stores all the info on a user, if user is employer also stores his / her reviews.<br />
-2. Jobs data - stores all job listings / offers.<br />
-3. Submissions data - Stores all submissions by candidate for job offers.<br />
-4. Candidate Resumes - Stores information on resumes (part of candidate data).<br />
+1. <code>Users data</code> - stores all the info on a user, if user is employer also stores his / her reviews.<br />
+2. <code>Jobs data</code> - stores all job listings / offers.<br />
+3. <code>Submissions data</code> - Stores all submissions by candidate for job offers.<br />
+4. <code>Candidate Resumes</code> - Stores information on resumes (part of candidate data).<br />
 Note: Files are not where data is stored in real time, only for loading when first running the program.<br />
-In real time data is stored in 3 lists: user_list, job_list, jobs_Submission_List<br />
+In real time data is stored in 3 lists: <code>user_list, job_list, jobs_Submission_List</code>.<br />
 
 <h2 align="left"> Data Flow Diagram </h2>
 <img align="middle" alt="IMAGE" src="Photos/Basics of software engineering project Data Flow Diagram level 2.png" width="1080" height="1080" />
 
 <h2 align="left"> Use Case Diagram Candidate </h2>
-<img align="middle" alt="IMAGE" src="Photos/Use case Diagram Candidate.png" width="1080" height="720" />
+<img align="middle" alt="IMAGE" src="Photos/Use case Diagram Candidate.png"/>
 
 <h2 align="left"> Use Case Diagram Employer </h2>
-<img align="middle" alt="IMAGE" src="Photos/Use case Diagram Employer.png" width="1080" height="720" />
+<img align="middle" alt="IMAGE" src="Photos/Use case Diagram Employer.png"/>
