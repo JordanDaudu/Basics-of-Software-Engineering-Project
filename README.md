@@ -1,6 +1,15 @@
 # Basics-of-Software-Engineering-Project
 
-<h3 align="center">Basic git commands:<h3>
+<img src="Photos/Basics of Software Engineering Photo2.png" align="center" alt="logo" width="800" height="400">
+
+This repository contains a Job System implementation that has different interaction based on the type of user you are. <br>
+There are 2 types of users available: <br>
+- Candidate(searching for jobs)
+- Employer(Publishing job(s) offer(s)). <br>
+
+Developed as part of the Basics of Software Engineering course at [SCE - Shamoon College of Engineering](https://www.sce.ac.il/).
+
+<h2 align="middle">Basic git commands:</h2>
 
   <img align="right" alt="IMAGE" src="Photos/Git Commands.jpeg" width="300" height="210"/>
 
@@ -12,7 +21,6 @@
 - `git checkout branch_name` - יעביר אותנו לבראנץ | ענף אחר
 
 
-<h3 align="center">Progress indicator<h3>
 <h2 align="left"> Main menu: </h2>
   <img align="right" alt="IMAGE" src="Photos/Main Menu.jpeg" width="350" height="100" />
 1.	Register ✅<br />
